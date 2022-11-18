@@ -1,23 +1,23 @@
-const colors = require("colors");
+const http = require('http')
+const discord = require('discord.js');
 const config = require('./config/config');
-const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
 
 // Creating a new client:
-const client = new Client({
+const client = new discord.Client({
   intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildPresences,
-    GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.MessageContent
+    discord.GatewayIntentBits.Guilds,
+    discord.GatewayIntentBits.GuildMessages,
+    discord.GatewayIntentBits.GuildPresences,
+    discord.GatewayIntentBits.GuildMessageReactions,
+    discord.GatewayIntentBits.DirectMessages,
+    discord.GatewayIntentBits.MessageContent
   ],
   partials: [
-    Partials.Channel,
-    Partials.Message,
-    Partials.User,
-    Partials.GuildMember,
-    Partials.Reaction
+    discord.Partials.Channel,
+    discord.Partials.Message,
+    discord.Partials.User,
+    discord.Partials.GuildMember,
+    discord.Partials.Reaction
   ],
   presence: {
     activities: [{
@@ -28,39 +28,34 @@ const client = new Client({
   }
 });
 
-require('http').createServer((req, res) => res.end('Ready.')).listen(3000);
+client.events = new discord.Collection()
 
-const AuthenticationToken = process.env.TOKEN || config.Client.TOKEN;
+http.createServer((req, res) => res.end('ready')).listen(443);
 
-if (!AuthenticationToken) {
-  console.warn("[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js.".red)
+if (!process.env.TOKEN) {
+  console.error("[crash] Authentication Token for Discord bot is required! Use Envrionment Secrets.")
   process.exit();
 };
 
-// Handler:
-client.prefix_commands = new Collection();
-client.slash_commands = new Collection();
-client.user_commands = new Collection();
-client.message_commands = new Collection();
-client.modals = new Collection();
-client.events = new Collection();
+fs.readdirSync('./events/')
+  .filter(file => file.endsWith('.js'))
+  .forEach(dir => {
+    let evfile = require(`../events/${file}`);
+    if (evfile.name) return console.log(`[events] Couldn't load the file ${file}. missing name or aliases.`);
 
-module.exports = client;
-
-["prefix", "application_commands", "modals", "events"].forEach((file) => {
-  require(`./handlers/${file}`)(client, config);
-});
+    client.events.set(evfile.name, evfile);
+    console.log(`[events] Loaded a file: ${evfile.name}`)
+  });
 
 // Login to the bot:
-client.login(AuthenticationToken)
-  .catch((err) => {
-    console.error("[CRASH] Something went wrong while connecting to your bot...");
-    console.error("[CRASH] Error from Discord API:" + err);
-    return process.exit();
-  });
+client.login(process.env.TOKEN).catch((err) => {
+  console.error("[crash] Something went wrong while connecting to your bot...");
+  console.error("[crash] Error from Discord API:" + err);
+  return process.exit();
+});
 
 // Handle errors:
 process.on('unhandledRejection', async (err, promise) => {
-  console.error(`[ANTI-CRASH] Unhandled Rejection: ${err}`.red);
+  console.error(`[anti-crash] Unhandled Rejection: ${err}`);
   console.error(promise);
 });
