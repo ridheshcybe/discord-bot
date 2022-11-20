@@ -10,7 +10,9 @@ fs.readdirSync(__dirname)
   .forEach((file) => {
     const pull = require(path.resolve(__dirname, file));
     data += `\n\`${pull.config.name}\` ► ${pull.config.description}`;
-    console.log(`loaded ${pull.config.name} in the help command`);
+    console.log(
+      `[help-command] loaded ${pull.config.name} in the help command`
+    );
   });
 
 module.exports = {
@@ -26,7 +28,7 @@ module.exports = {
         embeds: [
           new EmbedBuilder()
             .setDescription(
-              `hello ${message.author.name}! Here is a list of all commands in me! To get detailed description on any specific command, do ${config.prefix}help <command>${data}`
+              `Here is a list of all commands in me!\n To get detailed description on any specific command, do ${config.prefix}help <command>${data}`
             )
             .setColor("Green"),
         ],
