@@ -30,7 +30,7 @@ const client = new discord.Client({
   },
 });
 
-client.commands = new discord.Collecton();
+client.commands = new discord.Collection();
 
 http.createServer((req, res) => res.end("ready")).listen(443);
 
