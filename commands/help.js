@@ -5,9 +5,10 @@ const data = "";
 
 fs.readdirSync(__dirname)
   .filter((e) => e.endsWith(".js"))
+  .filter((e) => e !== "help.js")
   .forEach((file) => {
     const pull = require(path.resolve(__dirname, file));
-    console.log(pull);
+    console.log(file, pull);
     data += `\n${pull.config.name} ► ${pull.config.description}`;
     console.log(`loaded ${pull.config.name} in the help command`);
   });
