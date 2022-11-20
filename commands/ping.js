@@ -7,7 +7,7 @@ module.exports = {
   owner: false,
   run: async (client, message, args, config) => {
     client.createMessage(
-      msg.channel.id,
+      message.channel.id,
       `🏓 **Pong!** Client websocket ping: \`${client.ws.ping || "null"}\` ms.`
     );
   },
