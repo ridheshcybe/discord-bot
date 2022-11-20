@@ -1,3 +1,4 @@
+const fs = require("fs");
 const http = require("http");
 const discord = require("discord.js");
 const config = require("./config/config");
@@ -30,24 +31,24 @@ const client = new discord.Client({
   },
 });
 
-client.prefix_commands = new discord.Collecton();
+client.prefix_commands = {}
 
 http.createServer((req, res) => res.end("ready")).listen(443);
 
 // commands handler
 fs.readdirSync("./commands")
   .filter((e) => e.endsWith(".js"))
-  .forEach((dir) => {
+  .forEach((file) => {
     let pull = require(`./commands/${file}`);
 
-    if (pull.config.name)
+    if (!pull.config.name)
       return console.log(
         `[prefix] Couldn't load the file ${file}, missing module name value.`
       );
 
-    client.prefix_commands.set(pull.config.name, pull);
+    client.prefix_commands[pull.config.name] = pull;
     console.log(
-      `[prefix] Loaded a file: ${pull.config.name} (#${client.prefix_commands.size})`
+      `[prefix] Loaded a file: ${pull.config.name}`
     );
   });
 
@@ -67,7 +68,7 @@ client.on("messageCreate", async (message) => {
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
 
-  let command = client.prefix_commands.get(cmd);
+  let command = client.prefix_commands[cmd];
 
   if (!command) return;
 
@@ -75,7 +76,7 @@ client.on("messageCreate", async (message) => {
     if (command.permissions) {
       if (
         !message.member.permissions.has(
-          PermissionsBitField.resolve(command.permissions || [])
+          discord.PermissionsBitField.resolve(command.permissions || [])
         )
       )
         return message.reply({
@@ -128,7 +129,7 @@ client.once("ready", async () => {
 });
 
 // Login to the bot:
-client.connect().catch((err) => {
+client.login(process.env.TOKEN).catch((err) => {
   console.error("[crash] Something went wrong while connecting to your bot...");
   console.error("[crash] Error from Discord API:" + err);
   return process.exit();

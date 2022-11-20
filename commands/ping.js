@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require("discord.js"); 
+
 module.exports = {
   config: {
     name: "ping",
@@ -6,9 +8,10 @@ module.exports = {
   permissions: ["SendMessages"],
   owner: false,
   run: async (client, message, args, config) => {
-    client.createMessage(
-      message.channel.id,
-      `🏓 **Pong!** Client websocket ping: \`${client.ws.ping || "null"}\` ms.`
-    );
+    message.reply({ embeds: [
+      new EmbedBuilder()
+        .setDescription(`🏓 **Pong!** Client websocket ping: \`${client.ws.ping}\` ms.`)
+        .setColor("Green")
+    ] })
   },
 };
