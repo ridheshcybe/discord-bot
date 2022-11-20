@@ -1,24 +1,10 @@
 const http = require("http");
-const discord = require("discord.js");
+const Eris = require("eris");
 const config = require("./config/config");
 
 // Creating a new client:
-const client = new discord.Client({
-  intents: [
-    discord.GatewayIntentBits.Guilds,
-    discord.GatewayIntentBits.GuildMessages,
-    discord.GatewayIntentBits.GuildPresences,
-    discord.GatewayIntentBits.GuildMessageReactions,
-    discord.GatewayIntentBits.DirectMessages,
-    discord.GatewayIntentBits.MessageContent,
-  ],
-  partials: [
-    discord.Partials.Channel,
-    discord.Partials.Message,
-    discord.Partials.User,
-    discord.Partials.GuildMember,
-    discord.Partials.Reaction,
-  ],
+const client = new Eris(process.env.TOKEN, {
+  intents: ["guildMessages"],
   presence: {
     activities: [
       {
@@ -30,7 +16,7 @@ const client = new discord.Client({
   },
 });
 
-client.commands = new discord.Collecton();
+const commands = {};
 
 http.createServer((req, res) => res.end("ready")).listen(443);
 
@@ -45,7 +31,7 @@ fs.readdirSync("./commands")
         `[prefix] Couldn't load the file ${file}, missing module name value.`
       );
 
-    client.commands.set(pull.config.name, pull);
+    commands[pull.config.name] = pull;
     console.log(
       `[prefix] Loaded a file: ${pull.config.name} (#${client.commands.size})`
     );
@@ -67,58 +53,12 @@ client.on("messageCreate", async (message) => {
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
 
-  let command = client.commands.get(cmd);
+  if (!commands[cmd]) return;
 
-  if (!command) return;
-
-  if (command) {
-    if (command.permissions) {
-      if (
-        !message.member.permissions.has(
-          PermissionsBitField.resolve(command.permissions || [])
-        )
-      )
-        return message.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(
-                `🚫 Unfortunately, you are not authorized to use this command.`
-              )
-              .setColor("Red"),
-          ],
-        });
-    }
-
-    if ((command.owner, command.owner == true)) {
-      if (config.owners) {
-        const allowedUsers = []; // New Array.
-
-        config.owners.forEach((user) => {
-          const fetchedUser = message.guild.members.cache.get(user);
-          if (!fetchedUser) return allowedUsers.push("*Unknown User#0000*");
-          allowedUsers.push(`${fetchedUser.user.tag}`);
-        });
-
-        if (!config.owners.some((ID) => message.member.id.includes(ID)))
-          return message.reply({
-            embeds: [
-              new EmbedBuilder()
-                .setDescription(
-                  `🚫 Sorry but only owners can use this command! Allowed users:\n**${allowedUsers.join(
-                    ", "
-                  )}**`
-                )
-                .setColor("Red"),
-            ],
-          });
-      }
-    }
-
-    try {
-      command.run(client, message, args, config);
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    await commands[cmd].run(client, message, args, config);
+  } catch (e) {
+    console.error(e);
   }
 });
 
@@ -128,7 +68,7 @@ client.once("ready", async () => {
 });
 
 // Login to the bot:
-client.login(process.env.TOKEN).catch((err) => {
+client.connect().catch((err) => {
   console.error("[crash] Something went wrong while connecting to your bot...");
   console.error("[crash] Error from Discord API:" + err);
   return process.exit();
