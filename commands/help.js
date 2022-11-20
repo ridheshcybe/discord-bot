@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const data = "";
+let data = "";
 
 fs.readdirSync(__dirname)
   .filter((e) => e.endsWith(".js"))
