@@ -1,3 +1,4 @@
+const fs = require("fs");
 const http = require("http");
 const Eris = require("eris");
 const config = require("./config/config");
