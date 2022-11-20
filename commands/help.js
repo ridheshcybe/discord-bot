@@ -1,12 +1,12 @@
 const fs = require("fs");
 
-const data = {};
+const data = "";
 
 fs.readdirSync("./")
   .filter((e) => e.endsWith(".js"))
   .forEach((file) => {
-    const pull = require(`./${file}`);
-    data[pull.config.name] = pull.config.description;
+    const pull = require(path.resolve(__dirname, file));
+    data += `\n${pull.config.name} ► ${pull.config.description}`;
     console.log(`loaded ${pull.config.name} in the help command`);
   });
 
@@ -23,8 +23,7 @@ module.exports = {
         embeds: [
           new EmbedBuilder()
             .setDescription(
-              `**help**
-            `
+              `hello ${message.author.name}! Here is a list of all commands in me! To get detailed description on any specific command, do ${config.prefix}help <command>${data}`
             )
             .setColor("Green"),
         ],
