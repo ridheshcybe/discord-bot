@@ -3,7 +3,7 @@ const path = require("path");
 
 const data = "";
 
-fs.readdirSync("./")
+fs.readdirSync(__dirname)
   .filter((e) => e.endsWith(".js"))
   .forEach((file) => {
     const pull = require(path.resolve(__dirname, file));
