@@ -7,6 +7,7 @@ fs.readdirSync(__dirname)
   .filter((e) => e.endsWith(".js"))
   .forEach((file) => {
     const pull = require(path.resolve(__dirname, file));
+    console.log(pull);
     data += `\n${pull.config.name} ► ${pull.config.description}`;
     console.log(`loaded ${pull.config.name} in the help command`);
   });
