@@ -9,6 +9,6 @@ module.exports = {
   owner: true,
   run: async (client, message, args, config) => {
     console.log(message, args);
-    message.reply(`arguments => ${args}`);
+    message.reply(`arguments => ${args || "No arguments"}`);
   },
 };
