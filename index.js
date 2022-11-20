@@ -1,3 +1,4 @@
+const fs = require("fs");
 const http = require("http");
 const discord = require("discord.js");
 const config = require("./config/config");
