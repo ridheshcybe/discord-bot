@@ -6,7 +6,7 @@ module.exports = {
     name: "play",
     description: "Play your favorite songs",
   },
-  permissions: ["SEND_MESSAGES", "EMBED_LINKS"],
+  permissions: ["SendMessages"],
   owner: false,
   run: async (client, message, args, config, db) => {
     const serverQueue = db.get(message.guild.id);
