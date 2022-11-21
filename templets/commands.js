@@ -5,7 +5,7 @@ module.exports = {
   },
   permissions: "", // User permissions needed
   owner: false, // Owner only?
-  run: async (client, message, args, config) => {
+  run: async (client, message, args, config, db) => {
     // execute
   },
 };

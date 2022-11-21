@@ -2,6 +2,7 @@ const fs = require("fs");
 const http = require("http");
 const discord = require("discord.js");
 const config = require("./config/config");
+const db = new Map();
 
 // Creating a new client:
 const client = new discord.Client({
@@ -31,7 +32,7 @@ const client = new discord.Client({
   },
 });
 
-client.prefix_commands = {}
+client.prefix_commands = {};
 
 http.createServer((req, res) => res.end("ready")).listen(443);
 
@@ -47,9 +48,7 @@ fs.readdirSync("./commands")
       );
 
     client.prefix_commands[pull.config.name] = pull;
-    console.log(
-      `[prefix] Loaded a file: ${pull.config.name}`
-    );
+    console.log(`[prefix] Loaded a file: ${pull.config.name}`);
   });
 
 // message generate event
@@ -116,7 +115,7 @@ client.on("messageCreate", async (message) => {
     }
 
     try {
-      command.run(client, message, args, config);
+      command.run(client, message, args, config, db);
     } catch (error) {
       console.error(error);
     }
@@ -126,6 +125,16 @@ client.on("messageCreate", async (message) => {
 // ready event
 client.once("ready", async () => {
   console.log(`[ready] ${client.user.tag} is up and ready to go.`);
+});
+
+// reconnecting event
+client.once("reconnecting", () => {
+  console.log("Reconnecting!");
+});
+
+// disconnect event
+client.once("disconnect", () => {
+  console.log("Disconnect!");
 });
 
 // Login to the bot:
