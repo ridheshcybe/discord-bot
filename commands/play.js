@@ -55,7 +55,6 @@ module.exports = {
       try {
         var connection = await voiceChannel.join();
         queueContruct.connection = connection;
-        play(message.guild);
 
         const serverQueue = queue.get(message.guild.id);
         if (!queueContruct.songs[0].song) {
