@@ -6,20 +6,16 @@ const db = new Map();
 
 // Creating a new client:
 const client = new discord.Client({
-  intents: [
-    discord.GatewayIntentBits.Guilds,
-    discord.GatewayIntentBits.GuildMessages,
-    discord.GatewayIntentBits.GuildPresences,
-    discord.GatewayIntentBits.GuildMessageReactions,
-    discord.GatewayIntentBits.DirectMessages,
-    discord.GatewayIntentBits.MessageContent,
-  ],
   partials: [
-    discord.Partials.Channel,
-    discord.Partials.Message,
-    discord.Partials.User,
-    discord.Partials.GuildMember,
-    discord.Partials.Reaction,
+    Partials.Channel, // for text channel
+    Partials.GuildMember, // for guild member
+    Partials.User, // for discord user
+  ],
+  intents: [
+    GatewayIntentBits.Guilds, // for guild related things
+    GatewayIntentBits.GuildMembers, // for guild members related things
+    GatewayIntentBits.GuildIntegrations, // for discord Integrations
+    GatewayIntentBits.GuildVoiceStates, // for voice related things
   ],
   presence: {
     activities: [
@@ -36,6 +32,15 @@ client.prefix_commands = {};
 
 http.createServer((req, res) => res.end("ready")).listen(443);
 
+fs.readdirSync("./events")
+  .filter((e) => e.endsWith(".js"))
+  .forEach((file) => {
+    const event = require(`./events/${file}`);
+    let eventName = file.split(".")[0];
+    client.on(eventName, event.bind(null, client));
+    console.log(`[events] loaded event file => ${eventName}`);
+  });
+
 // commands handler
 fs.readdirSync("./commands")
   .filter((e) => e.endsWith(".js"))
@@ -44,98 +49,12 @@ fs.readdirSync("./commands")
 
     if (!pull.config.name)
       return console.log(
-        `[prefix] Couldn't load the file ${file}, missing module name value.`
+        `[commands] Couldn't load the file ${file}, missing module name value.`
       );
 
     client.prefix_commands[pull.config.name] = pull;
-    console.log(`[prefix] Loaded a file: ${pull.config.name}`);
+    console.log(`[commands] Loaded a file: ${pull.config.name}`);
   });
-
-// message generate event
-client.on("messageCreate", async (message) => {
-  if (message.channel.type !== 0) return;
-  if (message.author.bot) return;
-
-  const prefix = config.prefix || "?";
-
-  if (!message.content.startsWith(prefix)) return;
-  if (!message.guild) return;
-  if (!message.member)
-    message.member = await message.guild.fetchMember(message);
-
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const cmd = args.shift().toLowerCase();
-  if (cmd.length == 0) return;
-
-  let command = client.prefix_commands[cmd];
-
-  if (!command) return;
-
-  if (command) {
-    if (command.permissions) {
-      if (
-        !message.member.permissions.has(
-          discord.PermissionsBitField.resolve(command.permissions || [])
-        )
-      )
-        return message.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(
-                `🚫 Unfortunately, you are not authorized to use this command.`
-              )
-              .setColor("Red"),
-          ],
-        });
-    }
-
-    if ((command.owner, command.owner == true)) {
-      if (config.owners) {
-        const allowedUsers = []; // New Array.
-
-        config.owners.forEach((user) => {
-          const fetchedUser = message.guild.members.cache.get(user);
-          if (!fetchedUser) return allowedUsers.push("*Unknown User#0000*");
-          allowedUsers.push(`${fetchedUser.user.tag}`);
-        });
-
-        if (!config.owners.some((ID) => message.member.id.includes(ID)))
-          return message.reply({
-            embeds: [
-              new EmbedBuilder()
-                .setDescription(
-                  `🚫 Sorry but only owners can use this command! Allowed users:\n**${allowedUsers.join(
-                    ", "
-                  )}**`
-                )
-                .setColor("Red"),
-            ],
-          });
-      }
-    }
-
-    try {
-      command.run(client, message, args, config, db);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-});
-
-// ready event
-client.once("ready", async () => {
-  console.log(`[ready] ${client.user.tag} is up and ready to go.`);
-});
-
-// reconnecting event
-client.once("reconnecting", () => {
-  console.log("Reconnecting!");
-});
-
-// disconnect event
-client.once("disconnect", () => {
-  console.log("Disconnect!");
-});
 
 // Login to the bot:
 client.login(process.env.TOKEN).catch((err) => {
