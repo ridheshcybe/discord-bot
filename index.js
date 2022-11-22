@@ -37,6 +37,7 @@ fs.readdirSync("./events")
   .forEach((file) => {
     const event = require(`./events/${file}`);
     let eventName = file.split(".")[0];
+    console.log({ event, eventName });
     client.on(eventName, event(client));
     console.log(`[events] loaded event file => ${eventName}`);
   });
