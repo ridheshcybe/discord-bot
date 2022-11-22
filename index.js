@@ -7,15 +7,15 @@ const db = new Map();
 // Creating a new client:
 const client = new discord.Client({
   partials: [
-    Partials.Channel, // for text channel
-    Partials.GuildMember, // for guild member
-    Partials.User, // for discord user
+    discord.Partials.Channel, // for text channel
+    discord.Partials.GuildMember, // for guild member
+    discord.Partials.User, // for discord user
   ],
   intents: [
-    GatewayIntentBits.Guilds, // for guild related things
-    GatewayIntentBits.GuildMembers, // for guild members related things
-    GatewayIntentBits.GuildIntegrations, // for discord Integrations
-    GatewayIntentBits.GuildVoiceStates, // for voice related things
+    discord.GatewayIntentBits.Guilds, // for guild related things
+    discord.GatewayIntentBits.GuildMembers, // for guild members related things
+    discord.GatewayIntentBits.GuildIntegrations, // for discord Integrations
+    discord.GatewayIntentBits.GuildVoiceStates, // for voice related things
   ],
   presence: {
     activities: [
