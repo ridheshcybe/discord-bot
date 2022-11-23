@@ -1,8 +1,10 @@
 const fs = require("fs");
 const http = require("http");
 const discord = require("discord.js");
-const config = require("./config/config");
-const db = new Map();
+const { DisTube } = require("distube");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
 
 // Creating a new client:
 const client = new discord.Client({
@@ -29,15 +31,31 @@ const client = new discord.Client({
 });
 
 client.prefix_commands = {};
+client.config = require("./config/config.json");
+client.player = new DisTube(client, {
+  leaveOnStop: config.opt.voiceConfig.leaveOnStop,
+  leaveOnFinish: config.opt.voiceConfig.leaveOnFinish,
+  emitNewSongOnly: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
+  plugins: [
+    new SpotifyPlugin({
+      emitEventsAfterFetching: true,
+    }),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin(),
+  ],
+});
 
+// server handler
 http.createServer((req, res) => res.end("ready")).listen(443);
 
+// events handler
 fs.readdirSync("./events")
   .filter((e) => e.endsWith(".js"))
   .forEach((file) => {
     const event = require(`./events/${file}`);
     let eventName = file.split(".")[0];
-    console.log({ event, eventName });
     client.on(eventName, event(client));
     console.log(`[events] loaded event file => ${eventName}`);
   });
