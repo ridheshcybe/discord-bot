@@ -2,8 +2,8 @@ const { Command } = require("reconlx");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = new Command({
-    //options
-    name: "help",
+  //options
+  name: "help",
   description: "Show Bot All Commands",
   userPermissions: ["SEND_MESSAGES"],
   category: "Information",
@@ -48,13 +48,14 @@ module.exports = new Command({
           );
 
         const commands = (category) => {
-          return client.commands.filter((cmd) => cmd.category === category).map(
-            (cmd) => `\`${cmd.name}\``
-          );
+          return client.commands
+            .filter((cmd) => cmd.category === category)
+            .map((cmd) => `\`${cmd.name}\``);
         };
         try {
-          for (let i = 0; i < client.categories.length; i += 1) {
-            const current = client.categories[i];
+          const catagories = fs.readdirSync("./commands/");
+          for (let i = 0; i < catagories.length; i += 1) {
+            const current = catagories[i];
             const items = commands(current);
             homeEmbed.addField(
               `**${current.toUpperCase()} [${items.length}]**`,

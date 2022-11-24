@@ -20,9 +20,7 @@ const client = new Client({
 });
 
 // Global Variables
-client.cooldowns = new Collection();
-client.commands = new Collection();
-client.categories = fs.readdirSync("./commands/");
+client.commands = {};
 
 // slash handler
 const arrayOfCommands = [];
@@ -32,7 +30,7 @@ fs.readdirSync("./commands").forEach((cmd) => {
     .forEach((cmds) => {
       let pull = require(`../commands/${cmd}/${cmds}`);
       if (!pull.name) return console.log(`${cmds} Command is not Ready`);
-      client.commands.set(pull.name, pull);
+      client.commands[pull.name] = pull;
       arrayOfCommands.push(pull);
       console.log(`loaded ${pull.name}`);
       if (pull.aliases && Array.isArray(pull.aliases))
@@ -60,31 +58,29 @@ let distube = new Distube(client, {
   ],
 });
 
-distube.on("playSong", (queue, song) => {
-  queue.textChannel.send(
-    `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`
-  );
-});
-
-distube.on("addSong", (queue, song) => {
-  queue.textChannel.send(
-    `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}.`
-  );
-});
-
-distube.on("addList", (queue, playlist) => {
-  queue.textChannel.send(
-    `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to the queue!`
-  );
-});
-distube.on("disconnect", (queue) => {
-  queue.textChannel.send(`Song Ended`);
-});
-
-distube.on("initQueue", (queue) => {
-  queue.autoplay = false;
-  queue.volume = 100;
-});
+distube
+  .on("playSong", (queue, song) => {
+    queue.textChannel.send(
+      `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`
+    );
+  })
+  .on("addSong", (queue, song) => {
+    queue.textChannel.send(
+      `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}.`
+    );
+  })
+  .on("addList", (queue, playlist) => {
+    queue.textChannel.send(
+      `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to the queue!`
+    );
+  })
+  .on("disconnect", (queue) => {
+    queue.textChannel.send(`Song Ended`);
+  })
+  .on("initQueue", (queue) => {
+    queue.autoplay = false;
+    queue.volume = 100;
+  });
 
 client.on("ready", () => {
   console.log(`${client.user.username} Is Online`);
@@ -103,7 +99,7 @@ client.on("interactionCreate", async (interaction) => {
   if (interaction.isCommand()) {
     await interaction.deferReply({ ephemeral: false }).catch(() => {});
 
-    const cmd = client.commands.get(interaction.commandName);
+    const cmd = client.commands[interaction.commandName];
     if (!cmd) return interaction.followUp({ content: "An error has occured " });
 
     const args = [];
@@ -146,7 +142,7 @@ client.on("interactionCreate", async (interaction) => {
   // Context Menu Handling
   if (interaction.isContextMenu()) {
     await interaction.deferReply({ ephemeral: false });
-    const command = client.Commands.get(interaction.commandName);
+    const command = client.commands[interaction.commandName];
     if (command) command.run(client, interaction);
   }
 });
