@@ -19,7 +19,7 @@ const client = new Client({
 // Global Variables
 client.cooldowns = new Collection();
 client.commands = new Collection();
-client.categories = fs.readdirSync("./Commands/");
+client.categories = fs.readdirSync("./commands/");
 
 // Initializing the project
 //Loading files, with the client variable like Command Handler, Event Handler, ...
