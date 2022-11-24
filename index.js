@@ -1,135 +1,131 @@
 const fs = require("fs");
-const http = require("http");
-const discord = require("discord.js");
+const { Client, Collection, MessageEmbed } = require("discord.js");
 
-// Creating a new client:
-const client = new discord.Client({
-  partials: [
-    discord.Partials.Channel, // for text channel
-    discord.Partials.GuildMember, // for guild member
-    discord.Partials.User, // for discord user
-  ],
-  intents: [
-    discord.GatewayIntentBits.Guilds, // for guild related things
-    discord.GatewayIntentBits.GuildMembers, // for guild members related things
-    discord.GatewayIntentBits.GuildIntegrations, // for discord Integrations
-    discord.GatewayIntentBits.GuildVoiceStates, // for voice related things
-  ],
-  presence: {
-    activities: [
-      {
-        name: "mind games",
-        type: 0,
-      },
-    ],
-    status: "online",
+const client = new Client({
+  messageCacheLifetime: 60,
+  fetchAllMembers: false,
+  messageCacheMaxSize: 10,
+  restTimeOffset: 0,
+  restWsBridgetimeout: 100,
+  shards: "auto",
+  allowedMentions: {
+    parse: ["roles", "users", "everyone"],
+    repliedUser: true,
   },
+  partials: ["MESSAGE", "CHANNEL", "REACTION"],
+  intents: 32767,
 });
 
-client.prefix_commands = {};
-client.config = require("./config/config.json");
+// Global Variables
+client.cooldowns = new Collection();
+client.commands = new Collection();
+client.categories = fs.readdirSync("./Commands/");
 
-// server handler
-http.createServer((req, res) => res.end("ready")).listen(443);
+// Initializing the project
+//Loading files, with the client variable like Command Handler, Event Handler, ...
+["slash", "music"].forEach((handler) => {
+  require(`./handlers/${handler}`)(client);
+});
 
-// commands handler
-fs.readdirSync("./commands")
-  .filter((e) => e.endsWith(".js"))
-  .forEach((file) => {
-    let pull = require(`./commands/${file}`);
-
-    if (!pull.config.name)
-      return console.log(
-        `[commands] Couldn't load the file ${file}, missing module name value.`
-      );
-
-    client.prefix_commands[file.split(".")[0]] = pull;
-    console.log(`[commands] Loaded a file: ${pull.config.name}`);
-  });
-
-// Ready event
 client.on("ready", () => {
-  console.log(`[ready] ${client.user.tag} is up and ready to go.`);
+  console.log(`${client.user.username} Is Online`);
 });
 
-// message create event
-client.on("messageCreate", async (message) => {
-  if (message.author.bot) return;
-
-  const prefix = config.prefix || "?";
-
-  if (!message.content.startsWith(prefix)) return;
-  if (!message.member)
-    message.member = await message.guild.fetchMember(message);
-
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const cmd = args.shift().toLowerCase();
-  if (cmd.length == 0) return;
-
-  let command = client.prefix_commands[cmd];
-
-  if (!command) return;
-
-  if (command) {
-    if (command.permissions) {
-      if (
-        !message.member.permissions.has(
-          discord.PermissionsBitField.resolve(command.permissions || [])
-        )
-      )
-        return message.reply({
-          embeds: [
-            new discord.EmbedBuilder()
-              .setDescription(
-                `🚫 Unfortunately, you are not authorized to use this command.`
-              )
-              .setColor("Red"),
-          ],
-        });
-    }
-
-    if ((command.owner, command.owner == true)) {
-      if (config.owners) {
-        const allowedUsers = []; // New Array.
-
-        config.owners.forEach((user) => {
-          const fetchedUser = message.guild.members.cache.get(user);
-          if (!fetchedUser) return allowedUsers.push("*Unknown User#0000*");
-          allowedUsers.push(`${fetchedUser.user.tag}`);
-        });
-
-        if (!config.owners.some((ID) => message.member.id.includes(ID)))
-          return message.reply({
-            embeds: [
-              new discord.EmbedBuilder()
-                .setDescription(
-                  `🚫 Sorry but only owners can use this command! Allowed users:\n**${allowedUsers.join(
-                    ", "
-                  )}**`
-                )
-                .setColor("Red"),
-            ],
-          });
-      }
-    }
-
-    try {
-      command.run(client, message, args, config, db);
-    } catch (error) {
-      console.error(error);
-    }
+client.on("threadCreate", (thread) => {
+  try {
+    thread.join();
+  } catch (e) {
+    console.log(e.message);
   }
 });
 
-// Login to the bot:
-client.login(process.env.TOKEN).catch((err) => {
-  console.error("[crash] Something went wrong while connecting to your bot...");
-  console.error("[crash] Error from Discord API:" + err);
-  return process.exit();
+client.on("interactionCreate", async (interaction) => {
+  // Slash Command Handling
+  if (interaction.isCommand()) {
+    await interaction.deferReply({ ephemeral: false }).catch(() => {});
+
+    const cmd = client.commands.get(interaction.commandName);
+    if (!cmd) return interaction.followUp({ content: "An error has occured " });
+
+    const args = [];
+
+    for (let option of interaction.options.data) {
+      if (option.type === "SUB_COMMAND") {
+        if (option.name) args.push(option.name);
+        option.options?.forEach((x) => {
+          if (x.value) args.push(x.value);
+        });
+      } else if (option.value) args.push(option.value);
+    }
+    interaction.member = interaction.guild.members.cache.get(
+      interaction.user.id
+    );
+    if (interaction.member.id === client.user.id) {
+      interaction.followUp(`Its Me...`);
+    }
+    if (cmd) {
+      // checking user perms
+      if (!interaction.member.permissions.has(cmd.userPermissions || [])) {
+        return interaction.followUp({
+          embeds: [
+            new MessageEmbed()
+              .setColor("Red")
+              .setDescription(
+                `You don't Have ${cmd.userPermissions} To Run Command..`
+              )
+              .setFooter(
+                "By ridhesh w | cybe",
+                "https://img.icons8.com/color/452/discord-logo.png"
+              ),
+          ],
+        });
+      }
+      cmd.run({ client, interaction, args });
+    }
+  }
+
+  // Context Menu Handling
+  if (interaction.isContextMenu()) {
+    await interaction.deferReply({ ephemeral: false });
+    const command = client.Commands.get(interaction.commandName);
+    if (command) command.run(client, interaction);
+  }
 });
 
-// Handle errors:
-process.on("unhandledRejection", async (err, promise) => {
-  console.error(`[anti-crash] Unhandled Rejection: ${err}`);
-  console.error(promise);
+client.on("messageCreate", async (message) => {
+  if (message.author.bot || !message.guild) return;
+
+  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>)`);
+  if (!prefixRegex.test(message.content)) return;
+  const [, mPrefix] = message.content.match(prefixRegex);
+  if (mPrefix.includes(client.user.id)) {
+    message.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor("Blue")
+          .setFooter(
+            "By ridhesh w | cybe",
+            "https://img.icons8.com/color/452/discord-logo.png"
+          )
+          .setTitle(`**To See My All Commans Type **\`/help\``),
+      ],
+    });
+  }
 });
+
+client.login(process.env.TOKEN);
+
+process.on("unhandledRejection", (reason, p) => {
+  console.log("[Error_Handling] :: Unhandled Rejection/Catch");
+  console.log(reason, p);
+});
+process.on("uncaughtException", (err, origin) => {
+  console.log("[Error_Handling] :: Uncaught Exception/Catch");
+  console.log(err, origin);
+});
+process.on("uncaughtExceptionMonitor", (err, origin) => {
+  console.log("[Error_Handling] :: Uncaught Exception/Catch (MONITOR)");
+  console.log(err, origin);
+});
+
+module.exports = client;

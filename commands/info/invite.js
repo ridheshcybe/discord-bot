@@ -1,0 +1,23 @@
+const { MessageEmbed } = require("discord.js");
+
+module.exports = new Command({
+  // options
+  name: "invite",
+  description: `Get Bot Invite Link`,
+  userPermissions: ["SEND_MESSAGES"],
+  category: "Information",
+  // command start
+  run: async ({ client, interaction, args }) => {
+    let embed = new MessageEmbed()
+      .setColor("Green")
+      .setTitle(`Thanks For Inviting Me.`)
+      .setDescription(
+        `>>> [Click to Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`
+      )
+      .setFooter(
+        "By ridhesh w | cybe",
+        "https://img.icons8.com/color/452/discord-logo.png"
+      );
+    interaction.followUp({ embeds: [embed], ephemeral: true });
+  },
+});

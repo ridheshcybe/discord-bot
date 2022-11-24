@@ -1,11 +1,11 @@
-module.exports = {
-  config: {
-    name: "", // Name of Command
-    description: "", // Command Description
+const { Command } = require("reconlx");
+
+module.exports = new Command({
+  // options
+  description: ``,
+  userPermissions: [],
+  category: "",
+  run: async ({ client, interaction, args }) => {
+    // Code
   },
-  permissions: "", // User permissions needed
-  owner: false, // Owner only?
-  run: async (client, message, args, config, db) => {
-    // execute
-  },
-};
+});
