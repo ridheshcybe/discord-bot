@@ -4,11 +4,11 @@ module.exports = (client) => {
   try {
     let command = 0;
     const arrayOfCommands = [];
-    fs.readdirSync("./Commands").forEach((cmd) => {
-      fs.readdirSync(`./Commands/${cmd}/`)
+    fs.readdirSync("./commands").forEach((cmd) => {
+      fs.readdirSync(`./commands/${cmd}/`)
         .filter((file) => file.endsWith(".js"))
         .forEach((cmds) => {
-          let pull = require(`../Commands/${cmd}/${cmds}`);
+          let pull = require(`../commands/${cmd}/${cmds}`);
           const name = cmds.split(".")[0];
           if (!name) return console.log(`${cmds} Command is not Ready`);
           client.commands.set(name, pull);
