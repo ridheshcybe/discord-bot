@@ -2,18 +2,12 @@ const fs = require("fs");
 const { Client, Collection, MessageEmbed } = require("discord.js");
 
 const client = new Client({
-  messageCacheLifetime: 60,
-  fetchAllMembers: false,
-  messageCacheMaxSize: 10,
-  restTimeOffset: 0,
-  restWsBridgetimeout: 100,
-  shards: "auto",
-  allowedMentions: {
-    parse: ["roles", "users", "everyone"],
-    repliedUser: true,
-  },
-  partials: ["MESSAGE", "CHANNEL", "REACTION"],
-  intents: 32767,
+  intents: [
+    Discord.GatewayIntentBits.Guilds,
+    Discord.GatewayIntentBits.GuildMessages,
+    Discord.GatewayIntentBits.GuildVoiceStates,
+    Discord.GatewayIntentBits.MessageContent,
+  ],
 });
 
 // Global Variables
@@ -130,6 +124,7 @@ process.on("uncaughtExceptionMonitor", (err, origin) => {
 
 module.exports = client;
 
-
 //staying alive
-require("http").createServer((req,res)=>res.end("Ready.")).listen(8080)
+require("http")
+  .createServer((req, res) => res.end("Ready."))
+  .listen(8080);
