@@ -28,12 +28,16 @@ fs.readdirSync("./commands").forEach((cmd) => {
     .filter((file) => file.endsWith(".js"))
     .forEach((cmds) => {
       let pull = require(`../commands/${cmd}/${cmds}`);
+
       if (!pull.name || !pull.run)
         return console.log(`${cmds} Command is not Ready`);
+
       client.commands[pull.name] = pull;
-      console.log(`loaded ${pull.name}`);
+
       if (pull.aliases && Array.isArray(pull.aliases))
         pull.aliases.forEach((alias) => client.aliases.set(alias, name));
+
+      console.log(`loaded ${pull.name}`);
     });
 });
 
