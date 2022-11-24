@@ -27,7 +27,7 @@ fs.readdirSync("./commands").forEach((cmd) => {
   fs.readdirSync(`./commands/${cmd}/`)
     .filter((file) => file.endsWith(".js"))
     .forEach((cmds) => {
-      let pull = require(`../commands/${cmd}/${cmds}`);
+      let pull = require(`./commands/${cmd}/${cmds}`);
 
       if (!pull.name || !pull.run)
         return console.log(`${cmds} Command is not Ready`);
