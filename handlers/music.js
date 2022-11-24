@@ -5,14 +5,17 @@ const { SoundCloudPlugin } = require("@distube/soundcloud");
 
 module.exports = async (client) => {
   let distube = new Distube(client, {
-    emitNewSongOnly: false,
-    leaveOnEmpty: true,
-    leaveOnFinish: true,
-    leaveOnStop: true,
-    savePreviousSongs: true,
-    searchSongs: 0,
-    youtubeDL: true,
-    plugins: [new SpotifyPlugin(), new SoundCloudPlugin(), new YtDlpPlugin()],
+      leaveOnStop: false,
+  emitNewSongOnly: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
+  plugins: [
+    new SpotifyPlugin({
+      emitEventsAfterFetching: true
+    }),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin()
+  ]
   });
 
   distube.on("playSong", (queue, song) => {

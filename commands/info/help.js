@@ -1,9 +1,9 @@
 const { Command } = require("reconlx");
 const { MessageEmbed } = require("discord.js");
-const ee = require("../../settings/embed.json");
-const config = require("../../settings/config.json");
 
 module.exports = new Command({
+    //options
+    name: "help",
   description: "Show Bot All Commands",
   userPermissions: ["SEND_MESSAGES"],
   category: "Information",
@@ -48,7 +48,7 @@ module.exports = new Command({
           );
 
         const commands = (category) => {
-          return client.Commands.filter((cmd) => cmd.category === category).map(
+          return client.commands.filter((cmd) => cmd.category === category).map(
             (cmd) => `\`${cmd.name}\``
           );
         };

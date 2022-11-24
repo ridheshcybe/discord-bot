@@ -129,3 +129,7 @@ process.on("uncaughtExceptionMonitor", (err, origin) => {
 });
 
 module.exports = client;
+
+
+//staying alive
+require("http").createServer((req,res)=>res.end("Ready.")).listen(8080)

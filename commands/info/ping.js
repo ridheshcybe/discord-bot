@@ -1,6 +1,5 @@
 const { Command } = require("reconlx");
 const { MessageEmbed } = require("discord.js");
-const ee = require("../../settings/embed.json");
 
 module.exports = new Command({
   // options
