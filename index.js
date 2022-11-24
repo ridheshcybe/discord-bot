@@ -20,7 +20,7 @@ const client = new Client({
 });
 
 // Global Variables
-client.commands = {};
+client.commands = new Collection();
 
 // slash handler
 fs.readdirSync("./commands").forEach((cmd) => {
@@ -32,7 +32,7 @@ fs.readdirSync("./commands").forEach((cmd) => {
       if (!pull.name || !pull.run)
         return console.log(`${cmds} Command is not Ready`);
 
-      client.commands[pull.name] = pull;
+      client.commands.set(pull.name, pull);
 
       if (pull.aliases && Array.isArray(pull.aliases))
         pull.aliases.forEach((alias) => client.aliases.set(alias, name));
@@ -100,12 +100,12 @@ client.on("messageCreate", async (message) => {
   const commandName = args.shift().toLowerCase();
 
   const command =
-    client.commands[commandName] ||
-    client.commands[
-      Object.keys(client.commands).find(
+    client.commands.get(commandName) ||
+    client.commands.get(
+      client.commands.find(
         (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
       )
-    ];
+    );
   if (!command) return;
 
   try {
