@@ -92,77 +92,28 @@ client.on("threadCreate", (thread) => {
   }
 });
 
-client.on("interactionCreate", async (interaction) => {
-  // Slash Command Handling
-  if (interaction.isCommand()) {
-    await interaction.deferReply({ ephemeral: false }).catch(() => {});
-
-    const cmd = client.commands[interaction.commandName];
-    if (!cmd) return interaction.followUp({ content: "An error has occured " });
-
-    const args = [];
-
-    for (let option of interaction.options.data) {
-      if (option.type === "SUB_COMMAND") {
-        if (option.name) args.push(option.name);
-        option.options?.forEach((x) => {
-          if (x.value) args.push(x.value);
-        });
-      } else if (option.value) args.push(option.value);
-    }
-    interaction.member = interaction.guild.members.cache.get(
-      interaction.user.id
-    );
-    if (interaction.member.id === client.user.id) {
-      interaction.followUp(`Its Me...`);
-    }
-    if (cmd) {
-      // checking user perms
-      if (!interaction.member.permissions.has(cmd.userPermissions || [])) {
-        return interaction.followUp({
-          embeds: [
-            new MessageEmbed()
-              .setColor("Red")
-              .setDescription(
-                `You don't Have ${cmd.userPermissions} To Run Command..`
-              )
-              .setFooter(
-                "By ridhesh w | cybe",
-                "https://img.icons8.com/color/452/discord-logo.png"
-              ),
-          ],
-        });
-      }
-      cmd.run({ client, interaction, args });
-    }
-  }
-
-  // Context Menu Handling
-  if (interaction.isContextMenu()) {
-    await interaction.deferReply({ ephemeral: false });
-    const command = client.commands[interaction.commandName];
-    if (command) command.run(client, interaction);
-  }
-});
-
 client.on("messageCreate", async (message) => {
-  if (message.author.bot || !message.guild) return;
+  if (!message.content.startsWith("!") || message.author.bot) return;
+  if (message.channel.type === "dm") return;
+  const args = message.content.slice("!".length).split(" ");
 
-  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>)`);
-  if (!prefixRegex.test(message.content)) return;
-  const [, mPrefix] = message.content.match(prefixRegex);
-  if (mPrefix.includes(client.user.id)) {
-    message.reply({
-      embeds: [
-        new MessageEmbed()
-          .setColor("Blue")
-          .setFooter(
-            "By ridhesh w | cybe",
-            "https://img.icons8.com/color/452/discord-logo.png"
-          )
-          .setTitle(`**To See My All Commans Type **\`/help\``),
-      ],
-    });
+  const commandName = args.shift().toLowerCase();
+
+  const command =
+    client.commands[commandName] ||
+    client.commands[
+      Object.keys(client.commands).find(
+        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+      )
+    ];
+  if (!command) return;
+
+  try {
+    command.run({ client, interaction, args });
+  } catch (e) {
+    message.channel
+      .send(`Utilize \`!help\``)
+      .then((message) => setTimeout(() => message.delete(), 10000));
   }
 });
 

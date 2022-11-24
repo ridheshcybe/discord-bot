@@ -8,8 +8,8 @@ module.exports = new Command({
   userPermissions: ["SEND_MESSAGES"],
   category: "Information",
   // command start
-  run: async ({ client, interaction, args }) => {
-    interaction.followUp({
+  run: async ({ client, message, args }) => {
+    message.reply({
       embeds: [
         new MessageEmbed()
           .setColor("Green")

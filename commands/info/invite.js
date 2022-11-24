@@ -8,7 +8,7 @@ module.exports = new Command({
   userPermissions: ["SEND_MESSAGES"],
   category: "Information",
   // command start
-  run: async ({ client, interaction, args }) => {
+  run: async ({ client, message, args }) => {
     let embed = new MessageEmbed()
       .setColor("Green")
       .setTitle(`Thanks For Inviting Me.`)
@@ -19,6 +19,6 @@ module.exports = new Command({
         "By ridhesh w | cybe",
         "https://img.icons8.com/color/452/discord-logo.png"
       );
-    interaction.followUp({ embeds: [embed], ephemeral: true });
+    message.reply({ embeds: [embed], ephemeral: true });
   },
 });
