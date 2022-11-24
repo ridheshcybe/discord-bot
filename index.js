@@ -1,10 +1,14 @@
-const fs = require("fs");
 const {
   Client,
   Collection,
   MessageEmbed,
   GatewayIntentBits,
 } = require("discord.js");
+const fs = require("fs");
+const Distube = require("distube").default;
+const { YtDlpPlugin } = require("@distube/yt-dlp");
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
 
 const client = new Client({
   intents: [
@@ -20,10 +24,66 @@ client.cooldowns = new Collection();
 client.commands = new Collection();
 client.categories = fs.readdirSync("./commands/");
 
-// Initializing the project
-//Loading files, with the client variable like Command Handler, Event Handler, ...
-["slash", "music"].forEach((handler) => {
-  require(`./handlers/${handler}`)(client);
+// slash handler
+const arrayOfCommands = [];
+fs.readdirSync("./commands").forEach((cmd) => {
+  fs.readdirSync(`./commands/${cmd}/`)
+    .filter((file) => file.endsWith(".js"))
+    .forEach((cmds) => {
+      let pull = require(`../commands/${cmd}/${cmds}`);
+      if (!pull.name) return console.log(`${cmds} Command is not Ready`);
+      client.commands.set(pull.name, pull);
+      arrayOfCommands.push(pull);
+      console.log(`loaded ${pull.name}`);
+      if (pull.aliases && Array.isArray(pull.aliases))
+        pull.aliases.forEach((alias) => client.aliases.set(alias, name));
+    });
+  client.on("ready", async () => {
+    client.guilds.cache.forEach(async (g) => {
+      await client.guilds.cache.get(g.id).commands.set(arrayOfCommands);
+    });
+  });
+});
+
+//music handler
+let distube = new Distube(client, {
+  leaveOnStop: false,
+  emitNewSongOnly: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
+  plugins: [
+    new SpotifyPlugin({
+      emitEventsAfterFetching: true,
+    }),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin(),
+  ],
+});
+
+distube.on("playSong", (queue, song) => {
+  queue.textChannel.send(
+    `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`
+  );
+});
+
+distube.on("addSong", (queue, song) => {
+  queue.textChannel.send(
+    `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}.`
+  );
+});
+
+distube.on("addList", (queue, playlist) => {
+  queue.textChannel.send(
+    `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to the queue!`
+  );
+});
+distube.on("disconnect", (queue) => {
+  queue.textChannel.send(`Song Ended`);
+});
+
+distube.on("initQueue", (queue) => {
+  queue.autoplay = false;
+  queue.volume = 100;
 });
 
 client.on("ready", () => {
@@ -113,19 +173,6 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(process.env.TOKEN);
-
-process.on("unhandledRejection", (reason, p) => {
-  console.log("[Error_Handling] :: Unhandled Rejection/Catch");
-  console.log(reason, p);
-});
-process.on("uncaughtException", (err, origin) => {
-  console.log("[Error_Handling] :: Uncaught Exception/Catch");
-  console.log(err, origin);
-});
-process.on("uncaughtExceptionMonitor", (err, origin) => {
-  console.log("[Error_Handling] :: Uncaught Exception/Catch (MONITOR)");
-  console.log(err, origin);
-});
 
 module.exports = client;
 
