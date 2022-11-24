@@ -1,12 +1,17 @@
 const fs = require("fs");
-const { Client, Collection, MessageEmbed } = require("discord.js");
+const {
+  Client,
+  Collection,
+  MessageEmbed,
+  GatewayIntentBits,
+} = require("discord.js");
 
 const client = new Client({
   intents: [
-    Discord.GatewayIntentBits.Guilds,
-    Discord.GatewayIntentBits.GuildMessages,
-    Discord.GatewayIntentBits.GuildVoiceStates,
-    Discord.GatewayIntentBits.MessageContent,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.MessageContent,
   ],
 });
 
