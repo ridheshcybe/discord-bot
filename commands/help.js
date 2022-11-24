@@ -10,18 +10,15 @@ fs.readdirSync(__dirname)
   .filter((e) => e !== "help.js")
   .forEach((file) => {
     const pull = require(path.resolve(__dirname, file));
-    homedata += `\n\`${pull.config.name}\` ► ${pull.config.description}`;
-    individualdescription[pull.config.name] = pull.config.description;
+    homedata += `\n\`${file.split(".")[0]}\` ► ${pull.description}`;
+    individualdescription[file.split(".")[0]] = pull.description;
     console.log(
-      `[help-command] loaded ${pull.config.name} in the help command`
+      `[help-command] loaded ${file.split(".")[0]} in the help command`
     );
   });
 
 module.exports = {
-  config: {
-    name: "help",
-    description: "help command",
-  },
+  description: "help command",
   permissions: ["SendMessages"],
   owner: false,
   run: async (client, message, args, config) => {
