@@ -1,134 +1,79 @@
 const {
   Client,
+  Partials,
   Collection,
-  MessageEmbed,
   GatewayIntentBits,
 } = require("discord.js");
-const fs = require("fs");
-const Distube = require("distube").default;
-const { YtDlpPlugin } = require("@distube/yt-dlp");
-const { SpotifyPlugin } = require("@distube/spotify");
-const { SoundCloudPlugin } = require("@distube/soundcloud");
+const config = require("./config/config");
+const colors = require("colors");
 
+// Creating a new client:
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.DirectMessages,
     GatewayIntentBits.MessageContent,
   ],
-});
-
-// Global Variables
-client.commands = new Collection();
-
-// slash handler
-fs.readdirSync("./commands").forEach((cmd) => {
-  fs.readdirSync(`./commands/${cmd}/`)
-    .filter((file) => file.endsWith(".js"))
-    .forEach((cmds) => {
-      let pull = require(`./commands/${cmd}/${cmds}`);
-
-      if (!pull.name || !pull.run)
-        return console.log(`${cmds} Command is not Ready`);
-
-      client.commands.set(pull.name, pull);
-
-      if (pull.aliases && Array.isArray(pull.aliases))
-        pull.aliases.forEach((alias) => client.aliases.set(alias, name));
-
-      console.log(`loaded ${pull.name}`);
-    });
-});
-
-//music handler
-let distube = new Distube(client, {
-  leaveOnStop: false,
-  emitNewSongOnly: true,
-  emitAddSongWhenCreatingQueue: false,
-  emitAddListWhenCreatingQueue: false,
-  plugins: [
-    new SpotifyPlugin({
-      emitEventsAfterFetching: true,
-    }),
-    new SoundCloudPlugin(),
-    new YtDlpPlugin(),
+  partials: [
+    Partials.Channel,
+    Partials.Message,
+    Partials.User,
+    Partials.GuildMember,
+    Partials.Reaction,
   ],
+  presence: {
+    activities: [
+      {
+        name: "T.F.A is cool!",
+        type: 0,
+      },
+    ],
+    status: "dnd",
+  },
 });
 
-distube
-  .on("playSong", (queue, song) => {
-    queue.textChannel.send(
-      `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`
-    );
-  })
-  .on("addSong", (queue, song) => {
-    queue.textChannel.send(
-      `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}.`
-    );
-  })
-  .on("addList", (queue, playlist) => {
-    queue.textChannel.send(
-      `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to the queue!`
-    );
-  })
-  .on("disconnect", (queue) => {
-    queue.textChannel.send(`Song Ended`);
-  })
-  .on("initQueue", (queue) => {
-    queue.autoplay = false;
-    queue.volume = 100;
-  });
+// Host the bot:
+require("http")
+  .createServer((req, res) => res.end("Ready."))
+  .listen(3000);
 
-client.on("ready", () => {
-  console.log(`${client.user.username} Is Online`);
-});
+// Getting the bot token:
+const AuthenticationToken = process.env.TOKEN;
+if (!AuthenticationToken) {
+  console.warn(
+    "[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js."
+      .red
+  );
+  process.exit();
+}
 
-client.on("threadCreate", (thread) => {
-  try {
-    thread.join();
-  } catch (e) {
-    console.log(e.message);
-  }
-});
-
-client.on("messageCreate", async (message) => {
-  if (!message.content.startsWith("!") || message.author.bot) return;
-  if (message.channel.type === "dm") return;
-  const args = message.content.slice("!".length).split(" ");
-
-  const commandName = args.shift().toLowerCase();
-
-  const command =
-    client.commands.get(commandName) ||
-    client.commands.get(
-      client.commands.find(
-        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
-      )
-    );
-  if (!command) return;
-
-  try {
-    command.run({ client, message, args });
-  } catch (e) {
-    message.channel
-      .send(`Utilize \`!help\` err=>${e}`)
-      .then((message) => setTimeout(() => message.delete(), 10000));
-  }
-});
-
-client
-  .login(process.env.TOKEN)
-  .then((e) => {
-    console.log(`login success`);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+// Handler:
+client.events = new Collection();
+client.user_commands = new Collection();
+client.slash_commands = new Collection();
+client.prefix_commands = new Collection();
+client.message_commands = new Collection();
 
 module.exports = client;
 
-//staying alive
-require("http")
-  .createServer((req, res) => res.end("Ready."))
-  .listen(8080);
+["prefix", "application_commands", "modals", "events", "mongoose"].forEach(
+  (file) => {
+    require(`./handlers/${file}`)(client, config);
+  }
+);
+
+// Login to the bot:
+client.login(AuthenticationToken).catch((err) => {
+  console.error("[CRASH] Something went wrong while connecting to your bot...");
+  console.error("[CRASH] Error from Discord API:" + err);
+  return process.exit();
+});
+
+// Handle errors:
+process.on("unhandledRejection", async (err, promise) => {
+  console.error(`[ANTI-CRASH] Unhandled Rejection: ${err}`.red);
+  console.error(promise);
+});
