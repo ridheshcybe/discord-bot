@@ -9,6 +9,6 @@ module.exports = new Command({
   category: "Information",
   // command start
   run: async ({ client, message, args }) => {
-    message.reply(`Ping :- ${client.ws.ping}`);
+    message.reply(`Ping :- ${client.ws.ping}ms`);
   },
 });
