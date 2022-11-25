@@ -112,7 +112,7 @@ client.on("messageCreate", async (message) => {
     command.run({ client, interaction, args });
   } catch (e) {
     message.channel
-      .send(`Utilize \`!help\``)
+      .send(`Utilize \`!help\` err=>${e}`)
       .then((message) => setTimeout(() => message.delete(), 10000));
   }
 });
