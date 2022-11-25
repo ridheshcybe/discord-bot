@@ -4,8 +4,8 @@ const {
   Collection,
   GatewayIntentBits,
 } = require("discord.js");
+const chalk = require("chalk");
 const config = require("./config/config");
-const colors = require("colors");
 
 // Creating a new client:
 const client = new Client({
@@ -44,8 +44,9 @@ require("http")
 const AuthenticationToken = process.env.TOKEN;
 if (!AuthenticationToken) {
   console.warn(
-    "[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js."
-      .red
+    chalk.red(
+      "[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js."
+    )
   );
   process.exit();
 }
@@ -63,14 +64,16 @@ client.message_commands = new Collection();
 
 // Login to the bot:
 client.login(AuthenticationToken).catch((err) => {
-  console.error("[CRASH] Something went wrong while connecting to your bot...");
-  console.error("[CRASH] Error from Discord API:" + err);
+  console.error(
+    chalk.red("[CRASH] Something went wrong while connecting to your bot...")
+  );
+  console.error(chalk.red("[CRASH] Error from Discord API:" + err));
   return process.exit();
 });
 
 // Handle errors:
 process.on("unhandledRejection", async (err, promise) => {
-  console.error(`[ANTI-CRASH] Unhandled Rejection: ${err}`.red);
+  console.error(chalk.red(`[ANTI-CRASH] Unhandled Rejection: ${err}`));
   console.error(promise);
 });
 

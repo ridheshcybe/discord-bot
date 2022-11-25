@@ -13,12 +13,13 @@ module.exports = (client) => {
       if (pull.name) {
         client.events.set(pull.name, pull);
         console.log(
-          `[HANDLER - EVENTS] Loaded a file: ${pull.name}`.brightGreen
+          chalk.greenBright(`[HANDLER - EVENTS] Loaded a file: ${pull.name}`)
         );
       } else {
         console.log(
-          `[HANDLER - EVENTS] Couldn't load the file ${file}. missing name or aliases.`
-            .red
+          chalk.red(
+            `[HANDLER - EVENTS] Couldn't load the file ${file}. missing name or aliases.`
+          )
         );
         continue;
       }

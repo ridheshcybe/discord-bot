@@ -1,8 +1,8 @@
 const fs = require("fs");
-const colors = require("colors");
+const chalk = require("chalk");
 
 module.exports = (client, config) => {
-  console.log("Prefix Handler:".blue);
+  console.log(chalk.blue("Prefix Handler:"));
 
   fs.readdirSync("./commands/prefix/").forEach((dir) => {
     const commands = fs
@@ -13,13 +13,15 @@ module.exports = (client, config) => {
       if (pull.config.name) {
         client.prefix_commands.set(pull.config.name, pull);
         console.log(
-          `[HANDLER - PREFIX] Loaded a file: ${pull.config.name} (#${client.prefix_commands.size})`
-            .brightGreen
+          chalk.greenBright(
+            `[HANDLER - PREFIX] Loaded a file: ${pull.config.name} (#${client.prefix_commands.size})`
+          )
         );
       } else {
         console.log(
-          `[HANDLER - PREFIX] Couldn't load the file ${file}, missing module name value.`
-            .red
+          chalk.red(
+            `[HANDLER - PREFIX] Couldn't load the file ${file}, missing module name value.`
+          )
         );
         continue;
       }

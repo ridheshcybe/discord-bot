@@ -1,7 +1,6 @@
-const client = require("../index");
-const { PermissionsBitField, Routes, REST, User } = require("discord.js");
 const fs = require("fs");
-const colors = require("colors");
+const chalk = require("chalk");
+const { PermissionsBitField, Routes, REST, User } = require("discord.js");
 
 module.exports = (client, config) => {
   console.log("Application commands Handler:".blue);
@@ -21,8 +20,9 @@ module.exports = (client, config) => {
       if ((pull.name, pull.description, pull.type == 1)) {
         client.slash_commands.set(pull.name, pull);
         console.log(
-          `[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`
-            .brightGreen
+          chalk.greenBright(
+            `[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`
+          )
         );
 
         commands.push({
@@ -42,8 +42,9 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(
-          `[HANDLER - SLASH] Couldn't load the file ${file}, missing module name value, description, or type isn't 1.`
-            .red
+          chalk.red(
+            `[HANDLER - SLASH] Couldn't load the file ${file}, missing module name value, description, or type isn't 1.`
+          )
         );
         continue;
       }
@@ -63,8 +64,9 @@ module.exports = (client, config) => {
       if ((pull.name, pull.type == 2)) {
         client.user_commands.set(pull.name, pull);
         console.log(
-          `[HANDLER - USER] Loaded a file: ${pull.name} (#${client.user_commands.size})`
-            .brightGreen
+          chalk.greenBright(
+            `[HANDLER - USER] Loaded a file: ${pull.name} (#${client.user_commands.size})`
+          )
         );
 
         commands.push({
@@ -73,8 +75,9 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(
-          `[HANDLER - USER] Couldn't load the file ${file}, missing module name value or type isn't 2.`
-            .red
+          chalk.red(
+            `[HANDLER - USER] Couldn't load the file ${file}, missing module name value or type isn't 2.`
+          )
         );
         continue;
       }
@@ -94,8 +97,9 @@ module.exports = (client, config) => {
       if ((pull.name, pull.type == 3)) {
         client.message_commands.set(pull.name, pull);
         console.log(
-          `[HANDLER - MESSAGE] Loaded a file: ${pull.name} (#${client.user_commands.size})`
-            .brightGreen
+          chalk.greenBright(
+            `[HANDLER - MESSAGE] Loaded a file: ${pull.name} (#${client.user_commands.size})`
+          )
         );
 
         commands.push({
@@ -104,8 +108,9 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(
-          `[HANDLER - MESSAGE] Couldn't load the file ${file}, missing module name value or type isn't 2.`
-            .red
+          chalk.red(
+            `[HANDLER - MESSAGE] Couldn't load the file ${file}, missing module name value or type isn't 2.`
+          )
         );
         continue;
       }
