@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const { Command } = require("reconlx");
 
+let all = "";
 const individual = {};
-const all = "";
 
 fs.readdirSync(path.resolve(__dirname, "./"))
   .filter((e) => e.endsWith(".js"))
