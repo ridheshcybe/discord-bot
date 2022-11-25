@@ -1,4 +1,16 @@
+const fs = require("fs");
+const path = require("path");
 const { Command } = require("reconlx");
+
+const individual = {};
+const all = "";
+
+fs.readFileSync(path.resolve(__dirname, "./"))
+  .filter((e) => e.endsWith(".js"))
+  .forEach(({ name, description, category }) => {
+    all += `\n${name} => ${description}`;
+    individual[name] = `description => ${description}\ncategory => ${category}`;
+  });
 
 module.exports = new Command({
   //options
@@ -8,6 +20,7 @@ module.exports = new Command({
   category: "Information",
   // command start
   run: async ({ client, message, args }) => {
-    message.reply("Not implemented");
+    if (args.length == 0) return message.reply(all);
+    message.reply(individual[args[0]]);
   },
 });
