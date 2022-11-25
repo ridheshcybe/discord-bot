@@ -5,7 +5,7 @@ const { Command } = require("reconlx");
 const individual = {};
 const all = "";
 
-fs.readFileSync(path.resolve(__dirname, "./"))
+fs.readdirSync(path.resolve(__dirname, "./"))
   .filter((e) => e.endsWith(".js"))
   .forEach(({ name, description, category }) => {
     all += `\n${name} => ${description}`;
