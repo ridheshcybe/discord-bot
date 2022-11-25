@@ -19,6 +19,6 @@ module.exports = new Command({
         "By ridhesh w | cybe",
         "https://img.icons8.com/color/452/discord-logo.png"
       );
-    message.reply({ embeds: [embed], ephemeral: true });
+    message.reply({ embeds: [embed] });
   },
 });

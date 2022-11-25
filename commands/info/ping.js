@@ -19,7 +19,6 @@ module.exports = new Command({
             "https://img.icons8.com/color/452/discord-logo.png"
           ),
       ],
-      ephemeral: true,
     });
   },
 });
