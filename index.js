@@ -57,13 +57,9 @@ client.slash_commands = new Collection();
 client.prefix_commands = new Collection();
 client.message_commands = new Collection();
 
-module.exports = client;
-
-["prefix", "application_commands", "modals", "events", "mongoose"].forEach(
-  (file) => {
-    require(`./handlers/${file}`)(client, config);
-  }
-);
+["prefix", "application_commands", "events"].forEach((file) => {
+  require(`./handlers/${file}`)(client, config);
+});
 
 // Login to the bot:
 client.login(AuthenticationToken).catch((err) => {
@@ -77,3 +73,5 @@ process.on("unhandledRejection", async (err, promise) => {
   console.error(`[ANTI-CRASH] Unhandled Rejection: ${err}`.red);
   console.error(promise);
 });
+
+module.exports = client;
