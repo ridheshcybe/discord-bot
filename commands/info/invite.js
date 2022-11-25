@@ -9,16 +9,8 @@ module.exports = new Command({
   category: "Information",
   // command start
   run: async ({ client, message, args }) => {
-    let embed = new discord.MessageEmbed()
-      .setColor("Green")
-      .setTitle(`Thanks For Inviting Me.`)
-      .setDescription(
-        `>>> [Click to Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`
-      )
-      .setFooter(
-        "By ridhesh w | cybe",
-        "https://img.icons8.com/color/452/discord-logo.png"
-      );
-    message.reply({ embeds: [embed] });
+    message.reply(
+      `>>> [Click to Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`
+    );
   },
 });

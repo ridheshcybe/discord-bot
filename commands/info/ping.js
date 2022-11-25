@@ -9,16 +9,6 @@ module.exports = new Command({
   category: "Information",
   // command start
   run: async ({ client, message, args }) => {
-    message.reply({
-      embeds: [
-        new discord.MessageEmbed()
-          .setColor("Green")
-          .setTitle(`Ping :- ${client.ws.ping}`)
-          .setFooter(
-            "By ridhesh w | cybe",
-            "https://img.icons8.com/color/452/discord-logo.png"
-          ),
-      ],
-    });
+    message.reply(`Ping :- ${client.ws.ping}`);
   },
 });
