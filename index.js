@@ -109,7 +109,7 @@ client.on("messageCreate", async (message) => {
   if (!command) return;
 
   try {
-    command.run({ client, interaction, args });
+    command.run({ client, message, args });
   } catch (e) {
     message.channel
       .send(`Utilize \`!help\` err=>${e}`)
