@@ -1,5 +1,5 @@
 const { Command } = require("reconlx");
-const { MessageEmbed } = require("discord.js");
+const discord = require("discord.js");
 
 module.exports = new Command({
   // options
@@ -11,7 +11,7 @@ module.exports = new Command({
   run: async ({ client, message, args }) => {
     message.reply({
       embeds: [
-        new MessageEmbed()
+        new discord.MessageEmbed()
           .setColor("Green")
           .setTitle(`Ping :- ${client.ws.ping}`)
           .setFooter(

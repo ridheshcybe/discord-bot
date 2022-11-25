@@ -1,5 +1,5 @@
 const { Command } = require("reconlx");
-const { MessageEmbed } = require("discord.js");
+const discord = require("discord.js");
 
 module.exports = new Command({
   // options
@@ -9,7 +9,7 @@ module.exports = new Command({
   category: "Information",
   // command start
   run: async ({ client, message, args }) => {
-    let embed = new MessageEmbed()
+    let embed = new discord.MessageEmbed()
       .setColor("Green")
       .setTitle(`Thanks For Inviting Me.`)
       .setDescription(
