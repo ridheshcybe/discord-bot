@@ -117,7 +117,14 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-client.login(process.env.TOKEN);
+client
+  .login(process.env.TOKEN)
+  .then((e) => {
+    console.log(`login success`);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 module.exports = client;
 
