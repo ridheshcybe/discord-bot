@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const { PermissionsBitField, Routes, REST } = require("discord.js");
 
 module.exports = (client, config) => {
-  console.log("Application commands Handler:".blue);
+  console.log(chalk.blue("Application commands Handler:"));
 
   let commands = [];
 
@@ -65,7 +65,7 @@ module.exports = (client, config) => {
 
   (async () => {
     console.log(
-      "[HANDLER] Started registering all the application commands.".yellow
+      chalk.yellow("[HANDLER] Started registering all the application commands.")
     );
 
     try {
