@@ -20,7 +20,7 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.MessageContent,
-    "GUILD_VOICE_STATES",
+    GatewayIntentBits.GuildVoiceStates,
   ],
   partials: [
     Partials.Channel,
