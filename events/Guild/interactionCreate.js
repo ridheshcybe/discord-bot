@@ -20,30 +20,4 @@ client.on("interactionCreate", async (interaction) => {
       console.error(e);
     }
   }
-
-  if (interaction.isUserContextMenuCommand()) {
-    // User:
-    const command = client.user_commands.get(interaction.commandName);
-
-    if (!command) return;
-
-    try {
-      command.run(client, interaction, config, db);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  if (interaction.isMessageContextMenuCommand()) {
-    // Message:
-    const command = client.message_commands.get(interaction.commandName);
-
-    if (!command) return;
-
-    try {
-      command.run(client, interaction, config, db);
-    } catch (e) {
-      console.error(e);
-    }
-  }
 });
