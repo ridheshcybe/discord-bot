@@ -13,33 +13,39 @@ module.exports = {
     try {
       const { channel } = message.member.voice;
       if (!channel)
-        return message.channel.send(
-          new EmbedBuilder()
-            .setColor("Red")
+        return message.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Red")
 
-            .setTitle(`❌ ERROR | Please join a Channel first`)
-        );
+              .setTitle(`❌ ERROR | Please join a Channel first`),
+          ],
+        });
       if (!client.distube.getQueue(message))
-        return message.channel.send(
-          new EmbedBuilder()
-            .setColor("Red")
+        return message.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Red")
 
-            .setTitle(`❌ ERROR | I am not playing Something`)
-            .setDescription(`The Queue is empty`)
-        );
+              .setTitle(`❌ ERROR | I am not playing Something`)
+              .setDescription(`The Queue is empty`),
+          ],
+        });
       if (
         client.distube.getQueue(message) &&
         channel.id !== message.guild.me.voice.channel.id
       )
-        return message.channel.send(
-          new EmbedBuilder()
-            .setColor("Red")
+        return message.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Red")
 
-            .setTitle(`❌ ERROR | Please join **my** Channel first`)
-            .setDescription(
-              `Channelname: \`${message.guild.me.voice.channel.name}\``
-            )
-        );
+              .setTitle(`❌ ERROR | Please join **my** Channel first`)
+              .setDescription(
+                `Channelname: \`${message.guild.me.voice.channel.name}\``
+              ),
+          ],
+        });
 
       message.channel
         .send(
@@ -55,13 +61,15 @@ module.exports = {
       client.distube.skip(message);
     } catch (e) {
       console.log(String(e.stack).bgRed);
-      return message.channel.send(
-        new EmbedBuilder()
-          .setColor("Red")
+      return message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("Red")
 
-          .setTitle(`❌ ERROR | An error occurred`)
-          .setDescription(`\`\`\`${e.stack}\`\`\``)
-      );
+            .setTitle(`❌ ERROR | An error occurred`)
+            .setDescription(`\`\`\`${e.stack}\`\`\``),
+        ],
+      });
     }
   },
 };
