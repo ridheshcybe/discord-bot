@@ -8,7 +8,7 @@ module.exports = {
   owner: false, // Owner only?
   alias: [], // Command aliases
   run: async (client, message, args, prefix, config, db) => {
-    distube.stop(message);
+    client.distube.stop(message);
     return message.reply("Music stopped");
   },
 };

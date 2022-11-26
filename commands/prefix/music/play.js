@@ -10,6 +10,6 @@ module.exports = {
   owner: false,
   alias: ["p", "playsong", "playtrack"],
   run: async (client, message, args, prefix, config, db) => {
-    distube.play(message, args.join(" "));
+    client.distube.play(message, args.join(" "));
   },
 };
