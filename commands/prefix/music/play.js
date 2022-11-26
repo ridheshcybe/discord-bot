@@ -15,8 +15,7 @@ module.exports = {
       if (!channel)
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
             .setTitle(`❌ ERROR | Please join a Channel first`)
         );
       if (
@@ -25,8 +24,7 @@ module.exports = {
       )
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
             .setTitle(`❌ ERROR | Please join **my** Channel first`)
             .setDescription(
               `Channelname: \`${message.guild.me.voice.channel.name}\``
@@ -35,16 +33,14 @@ module.exports = {
       if (!args[0])
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
             .setTitle(`❌ ERROR | You didn't provided a Searchterm`)
             .setDescription(`Usage: \`${prefix}play <URL / TITLE>\``)
         );
       message.channel
         .send(
           new EmbedBuilder()
-            .setColor(ee.color)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Green")
             .setTitle("Searching Song")
             .setDescription(`\`\`\`fix\n${text}\n\`\`\``)
         )
@@ -72,8 +68,7 @@ module.exports = {
       console.log(String(e.stack).bgRed);
       return message.channel.send(
         new EmbedBuilder()
-          .setColor(ee.wrongcolor)
-          .setFooter(ee.footertext, ee.footericon)
+          .setColor("Red")
           .setTitle(`❌ ERROR | An error occurred`)
           .setDescription(`\`\`\`${e.stack}\`\`\``)
       );

@@ -15,15 +15,15 @@ module.exports = {
       if (!channel)
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
+
             .setTitle(`❌ ERROR | Please join a Channel first`)
         );
       if (!client.distube.getQueue(message))
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
+
             .setTitle(`❌ ERROR | I am not playing Something`)
             .setDescription(`The Queue is empty`)
         );
@@ -33,8 +33,8 @@ module.exports = {
       )
         return message.channel.send(
           new EmbedBuilder()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Red")
+
             .setTitle(`❌ ERROR | Please join **my** Channel first`)
             .setDescription(
               `Channelname: \`${message.guild.me.voice.channel.name}\``
@@ -44,8 +44,8 @@ module.exports = {
       message.channel
         .send(
           new EmbedBuilder()
-            .setColor(ee.color)
-            .setFooter(ee.footertext, ee.footericon)
+            .setColor("Green")
+
             .setTitle("⏹ Stopped playing Music and left your Channel")
         )
         .then((msg) =>
@@ -57,8 +57,8 @@ module.exports = {
       console.log(String(e.stack).bgRed);
       return message.channel.send(
         new EmbedBuilder()
-          .setColor(ee.wrongcolor)
-          .setFooter(ee.footertext, ee.footericon)
+          .setColor("Red")
+
           .setTitle(`❌ ERROR | An error occurred`)
           .setDescription(`\`\`\`${e.stack}\`\`\``)
       );
