@@ -53,6 +53,7 @@ if (!AuthenticationToken) {
 
 // Handler:
 client.events = new Collection();
+client.aliases = new Collection();
 client.user_commands = new Collection();
 client.slash_commands = new Collection();
 client.prefix_commands = new Collection();

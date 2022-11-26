@@ -10,7 +10,7 @@ module.exports = (client) => {
   console.log(chalk.blue("Events Handler:"));
   client.on("ready", async () => {
     console.log(
-        chalk.greenBright(`[READY] ${client.user.tag} is up and ready to go.`)
+      chalk.greenBright(`[READY] ${client.user.tag} is up and ready to go.`)
     );
   });
 
@@ -43,7 +43,9 @@ module.exports = (client) => {
     const cmd = args.shift().toLowerCase();
     if (cmd.length == 0) return;
 
-    let command = client.prefix_commands.get(cmd);
+    let command =
+      client.prefix_commands.get(cmd) ||
+      client.prefix_commands.get(client.aliases.get(cmd));
 
     if (!command) return;
 
