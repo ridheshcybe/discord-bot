@@ -74,7 +74,7 @@ module.exports = {
         client.distube.play(message, text);
       }
     } catch (e) {
-      console.log(String(e.stack).bgRed);
+      console.log(String(e.stack));
       return message.reply({
         embeds: [
           new EmbedBuilder()
