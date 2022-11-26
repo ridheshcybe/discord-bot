@@ -1,5 +1,5 @@
 const fs = require("fs");
-const colors = require("colors");
+const chalk = require("chalk");
 
 module.exports = (client) => {
   console.log("Events Handler:".blue);
