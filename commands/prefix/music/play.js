@@ -4,7 +4,7 @@ module.exports = {
   config: {
     name: "play",
     description: "Plays a song from spotify",
-    usage: "play <URL>",
+    usage: "play <URL/title>",
   },
   permissions: ["SendMessages", "Connect"],
   owner: false,
