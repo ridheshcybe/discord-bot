@@ -2,9 +2,9 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   config: {
-    name: "",
-    description: "",
-    usage: "",
+    name: "stop",
+    description: "stops the current music",
+    usage: "stop",
   },
   permissions: "",
   owner: false,
