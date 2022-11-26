@@ -14,7 +14,7 @@ module.exports = {
       const { channel } = message.member.voice;
       if (!channel)
         return message.channel.send(
-          new MessageEmbed()
+          new EmbedBuilder()
             .setColor(ee.wrongcolor)
             .setFooter(ee.footertext, ee.footericon)
             .setTitle(`❌ ERROR | Please join a Channel first`)
@@ -24,7 +24,7 @@ module.exports = {
         channel.id !== message.guild.me.voice.channel.id
       )
         return message.channel.send(
-          new MessageEmbed()
+          new EmbedBuilder()
             .setColor(ee.wrongcolor)
             .setFooter(ee.footertext, ee.footericon)
             .setTitle(`❌ ERROR | Please join **my** Channel first`)
@@ -34,7 +34,7 @@ module.exports = {
         );
       if (!args[0])
         return message.channel.send(
-          new MessageEmbed()
+          new EmbedBuilder()
             .setColor(ee.wrongcolor)
             .setFooter(ee.footertext, ee.footericon)
             .setTitle(`❌ ERROR | You didn't provided a Searchterm`)
@@ -42,7 +42,7 @@ module.exports = {
         );
       message.channel
         .send(
-          new MessageEmbed()
+          new EmbedBuilder()
             .setColor(ee.color)
             .setFooter(ee.footertext, ee.footericon)
             .setTitle("Searching Song")
@@ -71,7 +71,7 @@ module.exports = {
     } catch (e) {
       console.log(String(e.stack).bgRed);
       return message.channel.send(
-        new MessageEmbed()
+        new EmbedBuilder()
           .setColor(ee.wrongcolor)
           .setFooter(ee.footertext, ee.footericon)
           .setTitle(`❌ ERROR | An error occurred`)
