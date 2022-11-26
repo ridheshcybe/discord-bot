@@ -11,27 +11,28 @@ module.exports = {
   alias: ["p", "playsong", "playtrack"],
   run: async (client, message, args, prefix, config, db) => {
     if (!message.member.voice.channel)
-      return message
-        .reply({
-          content:
-            ":no_entry_sign: **You must join a voice channel to use that!**",
-          ephemeral: true,
-        })
-        .catch((err) => {
-          console.log(`i couldn't reply to the message: ` + err.message);
-        });
+      return message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(
+              ":no_entry_sign: **You must join a voice channel to use that!**"
+            )
+            .setColor("Red"),
+        ],
+      });
     if (
       message.guild.me.voice?.channel &&
       message.member.voice.channel.id !== message.guild.me.voice.channel.id
     )
-      return message
-        .reply({
-          content: `:no_entry_sign: You must be listening in **${message.guild.me.voice.channel.name}** to use that!`,
-          ephemeral: true,
-        })
-        .catch((err) => {
-          console.log(`i couldn't reply to the message: ` + err.message);
-        });
+      return message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(
+              `:no_entry_sign: You must be listening in **${message.guild.me.voice.channel.name}** to use that!`
+            )
+            .setColor("Red"),
+        ],
+      });
     const songTitle = args.slice(0).join(" ");
 
     const queue = await client.player.createQueue(message.guild, {
@@ -47,28 +48,31 @@ module.exports = {
       if (!queue.connection) await queue.connect(message.member.voice.channel);
     } catch {
       queue.destroy();
-      return await message
-        .reply({
-          content: "**Couldn't join your voice channel!**",
-          ephemeral: true,
-        })
-        .catch((err) => {
-          console.log(`i couldn't reply to the message: ` + err.message);
-        });
+      return await message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription("**Couldn't join your voice channel!**")
+            .setColor("Green"),
+        ],
+      });
     }
     if (!songTitle)
-      return message
-        .reply({
-          content: `:no_entry_sign: **You should type song name or url.**`,
-          ephemeral: true,
-        })
-        .catch((err) => {
-          console.log(`i couldn't reply to the message: ` + err.message);
-        });
+      return message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(
+              `:no_entry_sign: **You should type song name or url.**`
+            )
+            .setColor("Green"),
+        ],
+      });
     message
       .reply({
-        content: `:watch: Searching ... (\`${songTitle}\`)`,
-        etchReply: true,
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(`:watch: Searching ... (\`${songTitle}\`)`)
+            .setColor("Green"),
+        ],
       })
       .then(async (m) => {
         const searchResult = await client.player.search(songTitle, {
