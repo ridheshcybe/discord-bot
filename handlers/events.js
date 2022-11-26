@@ -1,7 +1,7 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const { QuickDB } = require("quick.db");
-const config = require("../../config/config.js");
+const config = require("../config/config.js");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 const db = new QuickDB();
