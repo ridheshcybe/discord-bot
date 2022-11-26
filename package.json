@@ -11,15 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "better-sqlite3": "^7.6.2",
-    "colors": "^1.4.0",
     "discord-api-types": "^0.36.2",
     "discord.js": "^14.5.0",
     "moment": "^2.29.4",
-    "mongoose": "^6.4.4",
     "ms": "^2.1.3",
     "node-fetch": "^2.6.7",
     "pretty-ms": "^6.0.1",
     "quick.db": "^9.0.5",
-    "super-djs": "^1.7.4"
+    "super-djs": "^1.7.4",
+    "chalk": "4.1.2"
   }
 }
