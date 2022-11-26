@@ -20,6 +20,9 @@ module.exports = {
             .setColor("Red"),
         ],
       });
+
+    if (!message.guild.me.voice)
+      message.guild.me.voice = message.guild.members.cache.get(user.id);
     if (
       message.guild.me.voice &&
       message.guild.me.voice?.channel &&
