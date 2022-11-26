@@ -49,7 +49,7 @@ module.exports = {
             new EmbedBuilder()
               .setColor("Green")
               .setTitle("Searching Song")
-              .setDescription(`\`\`\`fix\n${text}\n\`\`\``),
+              .setDescription(`\`\`\`fix\n${args[0]}\n\`\`\``),
           ],
         })
         .then((msg) =>
@@ -70,7 +70,7 @@ module.exports = {
           for (const song of result) client.distube.play(message, song.name);
         });
       } else {
-        client.distube.play(message, text);
+        client.distube.play(message, args[0]);
       }
     } catch (e) {
       console.log(String(e.stack).bgRed);

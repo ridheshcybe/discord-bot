@@ -47,13 +47,14 @@ module.exports = {
           ],
         });
 
-      message.channel
-        .send(
-          new EmbedBuilder()
-            .setColor("Green")
-
-            .setTitle("⏭ Skipped the Current Track")
-        )
+      message
+        .reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Green")
+              .setTitle("⏭ Skipped the Current Track"),
+          ],
+        })
         .then((msg) =>
           msg.delete({ timeout: 4000 }).catch((e) => console.log(e.message))
         );
