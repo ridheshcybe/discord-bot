@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const music = require("@koenie06/discord.js-music");
 
 module.exports = {
   config: {
@@ -21,20 +22,7 @@ module.exports = {
               .setTitle(`❌ ERROR | Please join a Channel first`),
           ],
         });
-      if (!client.distube.getQueue(message))
-        return message.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("Red")
-
-              .setTitle(`❌ ERROR | I am not playing Something`)
-              .setDescription(`The Queue is empty`),
-          ],
-        });
-      if (
-        client.distube.getQueue(message) &&
-        channel.id !== message.guild.me.voice.channel.id
-      )
+      if (channel.id !== message.guild.me.voice.channel.id)
         return message.reply({
           embeds: [
             new EmbedBuilder()
@@ -59,7 +47,7 @@ module.exports = {
           msg.delete({ timeout: 4000 }).catch((e) => console.log(e.message))
         );
 
-      client.distube.stop(message);
+      music.stop({ interaction: interaction });
     } catch (e) {
       console.log(String(e.stack).bgRed);
       return message.reply({

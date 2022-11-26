@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const music = require("@koenie06/discord.js-music");
 
 module.exports = {
   config: {
@@ -21,10 +22,7 @@ module.exports = {
               .setTitle(`❌ ERROR | Please join a Channel first`),
           ],
         });
-      if (
-        client.distube.getQueue(message) &&
-        channel.id !== message.guild.me.voice.channel.id
-      )
+      if (channel.id !== message.guild.me.voice.channel.id)
         return message.reply({
           embeds: [
             new EmbedBuilder()
@@ -54,25 +52,14 @@ module.exports = {
           ],
         })
         .then((msg) =>
-          msg.delete({ timeout: 3000 }).catch((e) => console.log(e.message))
+          msg.delete({ timeout: 5000 }).catch((e) => console.log(e.message))
         );
-      if (
-        args.join(" ").toLowerCase().includes("spotify") &&
-        args.join(" ").toLowerCase().includes("track")
-      ) {
-        getPreview(args.join(" ")).then((result) => {
-          client.distube.play(message, result.title);
-        });
-      } else if (
-        args.join(" ").toLowerCase().includes("spotify") &&
-        args.join(" ").toLowerCase().includes("playlist")
-      ) {
-        getTracks(args.join(" ")).then((result) => {
-          for (const song of result) client.distube.play(message, song.name);
-        });
-      } else {
-        client.distube.play(message, text);
-      }
+
+      music.play({
+        interaction: interaction,
+        channel: channel,
+        song: text,
+      });
     } catch (e) {
       console.log(String(e.stack));
       return message.reply({
