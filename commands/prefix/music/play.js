@@ -20,23 +20,6 @@ module.exports = {
             .setColor("Red"),
         ],
       });
-
-    if (!message.guild.me.voice)
-      message.guild.me.voice = message.guild.members.cache.get(user.id);
-    if (
-      message.guild.me.voice &&
-      message.guild.me.voice?.channel &&
-      message.member.voice.channel.id !== message.guild.me.voice.channel.id
-    )
-      return message.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setDescription(
-              `:no_entry_sign: You must be listening in **${message.guild.me.voice.channel.name}** to use that!`
-            )
-            .setColor("Red"),
-        ],
-      });
     const songTitle = args.slice(0).join(" ");
 
     const queue = await client.player.createQueue(message.guild, {
