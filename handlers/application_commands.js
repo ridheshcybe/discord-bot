@@ -1,6 +1,6 @@
 const fs = require("fs");
 const chalk = require("chalk");
-const { PermissionsBitField, Routes, REST, User } = require("discord.js");
+const { PermissionsBitField, Routes, REST } = require("discord.js");
 
 module.exports = (client, config) => {
   console.log("Application commands Handler:".blue);
@@ -9,7 +9,7 @@ module.exports = (client, config) => {
 
   // Slash commands handler:
   fs.readdirSync("./commands/slash/").forEach((dir) => {
-    console.log("[!] Started loading slash commands...".yellow);
+    console.log(chalk.yellow("[!] Started loading slash commands..."));
     const SlashCommands = fs
       .readdirSync(`./commands/slash/${dir}`)
       .filter((file) => file.endsWith(".js"));
