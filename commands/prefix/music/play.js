@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const { QueryType } = require("discord-player");
 
 module.exports = {
   config: {
