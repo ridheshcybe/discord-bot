@@ -21,6 +21,7 @@ module.exports = {
         ],
       });
     if (
+      message.guild.me.voice &&
       message.guild.me.voice?.channel &&
       message.member.voice.channel.id !== message.guild.me.voice.channel.id
     )
