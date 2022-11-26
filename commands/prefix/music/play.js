@@ -12,6 +12,7 @@ module.exports = {
   run: async (client, message, args, prefix, config, db) => {
     try {
       const { channel } = message.member.voice;
+      const text = args.join(" ");
       if (!channel)
         return message.reply({
           embeds: [
@@ -34,7 +35,7 @@ module.exports = {
               ),
           ],
         });
-      if (!args[0])
+      if (!text)
         return message.reply({
           embeds: [
             new EmbedBuilder()
@@ -49,7 +50,7 @@ module.exports = {
             new EmbedBuilder()
               .setColor("Green")
               .setTitle("Searching Song")
-              .setDescription(`\`\`\`fix\n${args[0]}\n\`\`\``),
+              .setDescription(`\`\`\`fix\n${text}\n\`\`\``),
           ],
         })
         .then((msg) =>
@@ -70,7 +71,7 @@ module.exports = {
           for (const song of result) client.distube.play(message, song.name);
         });
       } else {
-        client.distube.play(message, args[0]);
+        client.distube.play(message, text);
       }
     } catch (e) {
       console.log(String(e.stack).bgRed);
