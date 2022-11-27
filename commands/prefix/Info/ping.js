@@ -4,6 +4,7 @@ module.exports = {
   config: {
     name: "ping",
     description: "Replies with pong!",
+    usage: "ping",
   },
   permissions: ["SendMessages"],
   owner: false,
