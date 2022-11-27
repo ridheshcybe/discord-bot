@@ -6,7 +6,6 @@ const {
 } = require("discord.js");
 const chalk = require("chalk");
 const config = require("./config/config");
-const player = require("./handlers/player");
 
 // Creating a new client:
 const client = new Client({
@@ -54,7 +53,6 @@ if (!AuthenticationToken) {
 }
 
 // Handler:
-client.player = new player("!");
 client.events = new Collection();
 client.aliases = new Collection();
 client.user_commands = new Collection();
