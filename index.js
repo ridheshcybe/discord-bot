@@ -6,7 +6,6 @@ const {
 } = require("discord.js");
 const chalk = require("chalk");
 const config = require("./config/config");
-const { Player } = require("discord-player");
 
 // Creating a new client:
 const client = new Client({
@@ -35,64 +34,6 @@ const client = new Client({
     ],
     status: "dnd",
   },
-});
-
-const player = new Player(client, {
-  ytdlOptions: {
-    quality: "highestaudio",
-    highWaterMark: 1 << 25,
-    requestOptions: {
-      headers: {
-        cookie: "YOUR_YOUTUBE_COOKIE",
-      },
-    },
-  },
-});
-
-player.on("error", (queue, error) => {
-  console.log(`${queue.guild.name} An Error has occurred ${error}`, "error");
-});
-
-player.on("connectionError", (queue, error) => {
-  console.log(`Error emitted from the connection ${error.message}`);
-});
-
-player.on("botDisconnect", (queue) => {
-  console.log(`${queue.guild.name} Disconnected from Channel`);
-});
-
-player.on("connectionCreate", (queue, connection) => {
-  console.log(
-    `${queue.guild.name}: Bot has successfully connected to Voice Channel!`
-  );
-});
-
-player.on("connectionError", (queue, error) => {
-  console.log(
-    `${queue.guild.name}: There has been a connection error, ${error.message}`
-  );
-});
-
-player.on("queueEnd", (queue) => {
-  console.log(`${queue.guild.name}: Queue has finished playing!`);
-});
-
-player.on("trackAdd", (queue, track) => {
-  console.log(`${queue.guild.name}: ${track.title} has been added!`);
-});
-
-player.on("trackEnd", (queue, track) => {
-  console.log(`${queue.guild.name}: ${track.title} has finished playing!`);
-});
-
-player.on("tracksAdd", (queue, tracks) => {
-  console.log(
-    `${queue.guild.name}: A playlist with ${tracks.length} songs has beed added!`
-  );
-});
-
-player.on("trackStart", (queue, track) => {
-  console.log(`${queue.guild.name}: ${track.title} has started playing`);
 });
 
 // Host the bot:
