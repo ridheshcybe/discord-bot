@@ -83,6 +83,10 @@ class MusicPlayer extends EventEmitter {
     });
   }
 
+  /**
+   * stop queue
+   * @param {import('discord.js').Message} message
+   */
   async stop(message) {
     message.guild.me.voice.channel.leave();
   }
