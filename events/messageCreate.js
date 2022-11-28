@@ -46,7 +46,7 @@ module.exports = async (message) => {
         });
     }
 
-    if (command.owner) {
+    if (command.owner && command.owner === true) {
       if (config.Users?.OWNERS) {
         const allowedUsers = []; // New Array.
 
