@@ -1,4 +1,3 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const path = require("path");
 const Datastore = require("@seald-io/nedb");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
