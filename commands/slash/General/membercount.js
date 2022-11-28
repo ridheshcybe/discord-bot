@@ -9,13 +9,13 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: "SendMessages",
   },
   run: async (client, interaction, config, db) => {
-    console.log(interaction);
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
           .setDescription(
-            client.guilds.cache.get(interaction.guild.id).memberCount +
-              " members"
+            `${
+              client.guilds.cache.get(interaction.guild.id).memberCount - 1
+            } members`
           )
           .setColor("Blue"),
       ],
