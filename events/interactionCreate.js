@@ -6,7 +6,7 @@ const db = new Datastore({
   autoload: true,
 });
 
-module.exports = async (interaction) => {
+module.exports = async (interaction, client) => {
   if (interaction.isChatInputCommand()) {
     const command = client.slash_commands.get(interaction.commandName);
 

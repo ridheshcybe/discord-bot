@@ -7,6 +7,10 @@ module.exports = (client) => {
       chalk.greenBright(`[READY] ${client.user.tag} is up and ready to go.`)
     )
   );
-  client.on("interactionCreate", require("../events/interactionCreate"));
-  client.on("messageCreate", require("../events/messageCreate"));
+  client.on("interactionCreate", (i) =>
+    require("../events/interactionCreate")(i, client)
+  );
+  client.on("messageCreate", (i) =>
+    require("../events/messageCreate")(i, client)
+  );
 };
