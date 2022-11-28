@@ -2,11 +2,11 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "membercount",
-  description: "gives the amount of users in the current guild",
+  description: "amount of members in a guild",
   type: 1,
   options: [],
   permissions: {
-    DEFAULT_PERMISSIONS: "SendMessages",
+    DEFAULT_MEMBER_PERMISSIONS: "SendMessages",
   },
   run: async (client, interaction, config, db) => {
     console.log(interaction);
