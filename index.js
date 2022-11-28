@@ -55,14 +55,12 @@ if (!AuthenticationToken) {
 // Handler:
 client.events = new Collection();
 client.aliases = new Collection();
-client.user_commands = new Collection();
 client.slash_commands = new Collection();
 client.prefix_commands = new Collection();
-client.message_commands = new Collection();
 
-["prefix", "application_commands", "events"].forEach((file) => {
-  require(`./handlers/${file}`)(client, config);
-});
+require("./handlers/events")(client);
+require("./handlers/prefix")(client);
+require("./handlers/application_commands")(client, config);
 
 // Login to the bot:
 client.login(AuthenticationToken).catch((err) => {

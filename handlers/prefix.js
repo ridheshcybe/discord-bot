@@ -1,12 +1,11 @@
 const fs = require("fs");
 const chalk = require("chalk");
 
-module.exports = (client, config) => {
+module.exports = (client) => {
   console.log(chalk.blue("Prefix Handler:"));
 
   fs.readdirSync("./commands/prefix/").forEach((dir) => {
-    const commands = fs
-      .readdirSync(`./commands/prefix/${dir}`)
+    fs.readdirSync(`./commands/prefix/${dir}`)
       .filter((file) => file.endsWith(".js"))
       .forEach((file) => {
         let pull = require(`../commands/prefix/${dir}/${file}`);
