@@ -1,4 +1,5 @@
 const path = require("path");
+const config = require("../config/config");
 const Datastore = require("@seald-io/nedb");
 
 const db = new Datastore({
