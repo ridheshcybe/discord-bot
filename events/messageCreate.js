@@ -2,12 +2,14 @@ const path = require("path");
 const Datastore = require("@seald-io/nedb");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
-const db = new Datastore({
-  filename: path.resolve(__dirname, "../.db/main.db"),
-  autoload: true,
-});
+let db;
 
 module.exports = async (message) => {
+  if (!db)
+    db = new Datastore({
+      filename: path.resolve(__dirname, "../.db/main.db"),
+      autoload: true,
+    });
   if (message.channel.type !== 0) return;
   if (message.author.bot) return;
 
