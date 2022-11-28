@@ -16,13 +16,10 @@ module.exports = async (message, client) => {
 
   const prefix = "!";
 
-  if (!message.content.startsWith(prefix)) return;
   if (!message.guild) return;
   if (!message.member)
     message.member = await message.guild.fetchMember(message);
-
-  const mentions = message.mentions.users;
-  console.log(mentions);
+  if (!message.content.startsWith(prefix)) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
