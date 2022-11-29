@@ -16,7 +16,7 @@ module.exports = {
     });
     message.channel.bulkDelete(fetched);
     message.reply({
-      embed: [
+      embeds: [
         new EmbedBuilder()
           .setDescription(
             `successfully deleted ${limit} messages form ${message.channel.id}`
