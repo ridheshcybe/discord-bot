@@ -10,10 +10,20 @@ module.exports = {
   owner: false,
   alias: [],
   run: async (client, message, args, prefix, config, db) => {
+    const limit = args[0] || 1;
     message.delete();
     const fetched = await message.channel.fetchMessages({
-      limit: args[0] || 1,
+      limit,
     });
     message.channel.bulkDelete(fetched);
+    message.reply({
+      embed: [
+        new EmbedBuilder()
+          .setDescription(
+            `successfully deleted ${limit} messages form ${message.channel.id}`
+          )
+          .setColor("Green"),
+      ],
+    });
   },
 };
