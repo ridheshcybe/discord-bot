@@ -12,7 +12,7 @@ module.exports = {
   run: async (client, message, args, prefix, config, db) => {
     const limit = args[0] || 1;
     message.delete();
-    const fetched = await message.channel.fetchMessages({
+    const fetched = await message.channel.messages.fetch({
       limit,
     });
     message.channel.bulkDelete(fetched);
