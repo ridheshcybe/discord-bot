@@ -17,23 +17,14 @@ module.exports = (client, config) => {
     for (let file of SlashCommands) {
       let pull = require(`../commands/slash/${dir}/${file}`);
 
-      if ((pull.name, pull.description, pull.type == 1)) {
-        client.slash_commands.set(pull.name, pull);
-        console.log(
-          chalk.greenBright(
-            `[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`
-          )
-        );
+      client.slash_commands.set(pull.data.name, pull);
+      console.log(
+        chalk.greenBright(
+          `[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`
+        )
+      );
 
-        commands.push(pull);
-      } else {
-        console.log(
-          chalk.red(
-            `[HANDLER - SLASH] Couldn't load the file ${file}, missing module name value, description, or type isn't 1.`
-          )
-        );
-        continue;
-      }
+      commands.push(pull);
     }
   });
 
