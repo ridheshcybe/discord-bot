@@ -1,13 +1,10 @@
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-  name: "ping",
-  description: "Replies with pong!",
-  type: 1,
-  options: [],
-  permissions: {
-    DEFAULT_MEMBER_PERMISSIONS: "SendMessages",
-  },
+  data: new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Replies with pong!")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
   run: async (client, interaction, config, db) => {
     return interaction.reply({
       embeds: [

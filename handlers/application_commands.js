@@ -25,21 +25,7 @@ module.exports = (client, config) => {
           )
         );
 
-        commands.push({
-          name: pull.name,
-          description: pull.description,
-          type: pull.type || 1,
-          options: pull.options ? pull.options : null,
-          default_permission: pull.permissions.DEFAULT_PERMISSIONS
-            ? pull.permissions.DEFAULT_PERMISSIONS
-            : null,
-          default_member_permissions: pull.permissions
-            .DEFAULT_MEMBER_PERMISSIONS
-            ? PermissionsBitField.resolve(
-                pull.permissions.DEFAULT_MEMBER_PERMISSIONS
-              ).toString()
-            : null,
-        });
+        commands.push(pull);
       } else {
         console.log(
           chalk.red(
@@ -65,7 +51,9 @@ module.exports = (client, config) => {
 
   (async () => {
     console.log(
-      chalk.yellow("[HANDLER] Started registering all the application commands.")
+      chalk.yellow(
+        "[HANDLER] Started registering all the application commands."
+      )
     );
 
     try {

@@ -1,13 +1,11 @@
 const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
-  name: "membercount",
-  description: "amount of members in a guild",
-  type: 1,
-  options: [],
-  permissions: {
-    DEFAULT_MEMBER_PERMISSIONS: "SendMessages",
-  },
+  data: new SlashCommandBuilder()
+    .setName("memebercount")
+    .setDescription("amount of members in a guild")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
   run: async (client, interaction, config, db) => {
     return interaction.reply({
       embeds: [

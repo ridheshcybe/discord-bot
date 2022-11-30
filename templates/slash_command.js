@@ -1,15 +1,53 @@
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
-  name: "", // Name of command
-  description: "", // Command description
-  type: 1, // Command type
-  options: [], // Command options
-  permissions: {
-    DEFAULT_PERMISSIONS: "", // Client permissions needed
-    DEFAULT_MEMBER_PERMISSIONS: "", // User permissions needed
-  },
+  data: new SlashCommandBuilder(),
   run: async (client, interaction, config, db) => {
     // execute
   },
 };
+
+/*
+permissions: 
+  'CreateInstantInvite',
+  'KickMembers',
+  'BanMembers',
+  'Administrator',
+  'ManageChannels',
+  'ManageGuild',
+  'AddReactions',
+  'ViewAuditLog',
+  'PrioritySpeaker',
+  'Stream',
+  'ViewChannel',
+  'SendMessages',
+  'SendTTSMessages',
+  'ManageMessages',
+  'EmbedLinks',
+  'AttachFiles',
+  'ReadMessageHistory',
+  'MentionEveryone',
+  'UseExternalEmojis',
+  'ViewGuildInsights',
+  'Connect',
+  'Speak',
+  'MuteMembers',
+  'DeafenMembers',
+  'MoveMembers',
+  'UseVAD',
+  'ChangeNickname',
+  'ManageNicknames',
+  'ManageRoles',
+  'ManageWebhooks',
+  'ManageEmojisAndStickers',
+  'UseApplicationCommands',
+  'RequestToSpeak',
+  'ManageEvents',
+  'ManageThreads',
+  'CreatePublicThreads',
+  'CreatePrivateThreads',
+  'UseExternalStickers',
+  'SendMessagesInThreads',
+  'UseEmbeddedActivities',
+  'ModerateMembers'
+  */
