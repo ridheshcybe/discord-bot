@@ -24,7 +24,7 @@ module.exports = (client, config) => {
         )
       );
 
-      commands.push(pull);
+      commands.push(pull.data.toJSON());
     }
   });
 
