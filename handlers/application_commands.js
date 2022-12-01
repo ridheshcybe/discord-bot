@@ -1,6 +1,6 @@
 const fs = require("fs");
 const chalk = require("chalk");
-const { PermissionsBitField, Routes, REST } = require("discord.js");
+const { Routes, REST } = require("discord.js");
 
 module.exports = (client, config) => {
   console.log(chalk.blue("Application commands Handler:"));
