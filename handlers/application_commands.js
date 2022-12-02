@@ -31,7 +31,7 @@ module.exports = (client, config) => {
   // Registering all the application commands:
   if (!config.Client.ID) {
     console.log(
-      "[CRASH] You need to provide your bot ID in config.js!".red + "\n"
+      chalk.red("[CRASH] You need to provide your bot ID in config.js!")
     );
     return process.exit();
   }
