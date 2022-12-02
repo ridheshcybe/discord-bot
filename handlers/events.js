@@ -3,9 +3,7 @@ module.exports = (client) => {
   console.log(chalk.blue("Events Handler:"));
 
   client.on("ready", () =>
-    console.log(
-      chalk.greenBright(`[READY] ${client.user.tag} is up and ready to go.`)
-    )
+    require("../events/ready")(client, require("../config/config"))
   );
   client.on("interactionCreate", (i) =>
     require("../events/interactionCreate")(i, client)
