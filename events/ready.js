@@ -60,7 +60,9 @@ module.exports = (client, config) => {
       }
       if (a.length - 1 == i) {
         console.log(
-          `[HANDLER] Successfully registered for all the application commands`
+          chalk.greenBright(
+            `[HANDLER] Successfully registered for all the application commands`
+          )
         );
       }
     });
