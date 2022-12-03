@@ -1,6 +1,6 @@
 const fs = require("fs");
 const chalk = require("chalk");
-const { REST } = require("discord.js");
+const { REST, Routes } = require("discord.js");
 
 // Slash commands handler:
 
