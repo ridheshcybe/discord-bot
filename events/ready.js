@@ -1,3 +1,4 @@
+const fs = require("fs");
 const chalk = require("chalk");
 
 // Slash commands handler:
