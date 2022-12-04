@@ -11,9 +11,14 @@ module.exports = async (interaction, client) => {
   if (interaction.isChatInputCommand()) {
     const command = client.slash_commands.get(interaction.commandName);
 
-    console.log(interaction);
-
     if (!command) return;
+    if (!interaction.guildId)
+      return interaction.reply({
+        embeds: [
+          new EmbedBuilder().setDescription("Not in a guild").setColor("Red"),
+        ],
+        ephemeral: true,
+      });
 
     try {
       command.run(client, interaction, config, db);
