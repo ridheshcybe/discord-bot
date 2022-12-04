@@ -39,22 +39,29 @@ module.exports = (client, config) => {
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
   console.log(
-    chalk.yellow("[HANDLER] Started registering all the application commands.")
+    chalk.yellow(
+      `[HANDLER] Started registering ${commands.length} application commands.`
+    )
   );
 
   client.guilds.cache
     .map((guild) => guild.id)
     .forEach(async (e, i, a) => {
       try {
-        await rest.put(Routes.applicationGuildCommands(config.Client.ID, e), {
-          body: commands,
-        });
+        const data = await rest.put(
+          Routes.applicationGuildCommands(config.Client.ID, e),
+          {
+            body: commands,
+          }
+        );
 
         console.log(
           chalk.greenBright(
-            `[HANDLER] Successfully registered all the application commands for ${e}`
+            `[HANDLER] Successfully registered ${data.length} application commands for ${e}`
           )
         );
+
+        data = null;
       } catch (err) {
         console.log(err);
       }
