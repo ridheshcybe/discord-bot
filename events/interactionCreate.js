@@ -11,6 +11,8 @@ module.exports = async (interaction, client) => {
   if (interaction.isChatInputCommand()) {
     const command = client.slash_commands.get(interaction.commandName);
 
+    console.log(interaction);
+
     if (!command) return;
 
     try {
