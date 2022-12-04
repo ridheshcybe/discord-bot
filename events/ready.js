@@ -48,7 +48,7 @@ module.exports = (client, config) => {
     .map((guild) => guild.id)
     .forEach(async (e, i, a) => {
       try {
-        const data = await rest.put(
+        let data = await rest.put(
           Routes.applicationGuildCommands(config.Client.ID, e),
           {
             body: commands,
