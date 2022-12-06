@@ -1,6 +1,7 @@
 const path = require("path");
 const config = require("../config/config");
 const Datastore = require("@seald-io/nedb");
+const { EmbedBuilder } = require("discord.js");
 
 const db = new Datastore({
   filename: path.resolve(__dirname, "../.db/main.db"),
