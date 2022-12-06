@@ -16,7 +16,7 @@ module.exports = {
     ),
   run: async (client, interaction, config, db) => {
     youTube.search(
-      interaction.options._hoistedOptions[0].value,
+      interaction.options.getString("query"),
       1,
       (error, result) => {
         if (error) return interaction.reply(JSON.stringify(error));
