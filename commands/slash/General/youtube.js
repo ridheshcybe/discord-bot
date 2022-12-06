@@ -12,9 +12,9 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    const videos = await YouTube.search(
+    const videos = await YouTube.searchOne(
       interaction.options._hoistedOptions[0].value,
-      { limit: 1, safeSearch: true }
+      { safeSearch: true }
     );
     console.log(videos);
     interaction.reply("N.I");
