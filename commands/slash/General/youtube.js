@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const pack = require("../../../packages/youtube");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,6 +12,7 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    interaction.reply("Not implemented yet");
+    const data = await pack();
+    interaction.reply(data[0].url);
   },
 };
