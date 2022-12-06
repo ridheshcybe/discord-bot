@@ -13,6 +13,7 @@ module.exports = {
     ),
   run: async (client, interaction, config, db) => {
     const data = await pack(interaction.options._hoistedOptions[0].value);
-    interaction.reply(data[0].url);
+    console.log(data);
+    interaction.reply("N.I");
   },
 };
