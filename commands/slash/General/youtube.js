@@ -1,5 +1,5 @@
+const youtubeSuggest = require("youtube-suggest");
 const { SlashCommandBuilder } = require("discord.js");
-const pack = require("../../../packages/youtube");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,7 +12,9 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    const data = await pack(interaction.options._hoistedOptions[0].value);
+    const data = await youtubeSuggest(
+      interaction.options._hoistedOptions[0].value
+    );
     console.log(data);
     interaction.reply("N.I");
   },
