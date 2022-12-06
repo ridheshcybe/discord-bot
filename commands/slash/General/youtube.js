@@ -1,4 +1,4 @@
-const youtubeSuggest = require("youtube-suggest");
+const YouTube = require("youtube-sr").default;
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -12,10 +12,11 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    const data = await youtubeSuggest(
-      interaction.options._hoistedOptions[0].value
+    const videos = await YouTube.search(
+      interaction.options._hoistedOptions[0].value,
+      { limit: 1, safeSearch: true }
     );
-    console.log(data);
+    console.log(videos);
     interaction.reply("N.I");
   },
 };
