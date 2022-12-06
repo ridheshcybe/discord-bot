@@ -12,9 +12,7 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    // const data = await pack(interaction.options);
-    // interaction.reply(data[0].url);
-    console.log(interaction.options);
-    interaction.reply("hi");
+    const data = await pack(interaction.options._hoistedOptions[0].value);
+    interaction.reply(data[0].url);
   },
 };
