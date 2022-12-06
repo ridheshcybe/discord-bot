@@ -173,7 +173,7 @@ module.exports = async function searchVideo(searchQuery) {
       searchQuery.trim()
     )}&hl=en`
   );
-  let html = await searchRes.body();
+  let html = await searchRes.text();
   // try to parse html
   try {
     const data = html.split("ytInitialData = '")[1].split("';</script>")[0];
