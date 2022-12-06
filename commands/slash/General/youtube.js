@@ -1,4 +1,3 @@
-const YouTube = require("youtube-sr").default;
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -12,11 +11,6 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    const videos = await YouTube.searchOne(
-      interaction.options._hoistedOptions[0].value,
-      { safeSearch: true }
-    );
-    console.log(videos);
     interaction.reply("N.I");
   },
 };
