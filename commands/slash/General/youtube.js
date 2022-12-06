@@ -2,6 +2,8 @@ const YouTube = require("youtube-node");
 const { SlashCommandBuilder } = require("discord.js");
 const youTube = new YouTube();
 
+youTube.setKey(process.env.YOUTUBE_TOKEN);
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("youtube")
@@ -13,16 +15,15 @@ module.exports = {
         .setRequired(true)
     ),
   run: async (client, interaction, config, db) => {
-    youTube.setKey(process.env.YOUTUBE_TOKEN);
-
     youTube.search(
       interaction.options._hoistedOptions[0].value,
       1,
       (error, result) => {
-        if (error) return console.log(error);
-        console.log(JSON.stringify(result, null, 2));
+        if (error) return interaction.reply(JSON.stringify(error));
+        interaction.reply(
+          `https://youtube.com/watch?v=${result.items[0].id.videoId}`
+        );
       }
     );
-    interaction.reply("N.I");
   },
 };
