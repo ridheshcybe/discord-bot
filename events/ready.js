@@ -18,7 +18,7 @@ module.exports = (client, config) => {
       client.slash_commands.set(pull.data.name, pull);
       console.log(
         chalk.greenBright(
-          `[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`
+          `[HANDLER - SLASH] Loaded a file: ${pull.data.name} (#${client.slash_commands.size})`
         )
       );
 
