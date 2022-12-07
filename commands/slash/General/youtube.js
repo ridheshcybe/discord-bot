@@ -1,5 +1,6 @@
 const YouTube = require("youtube-node");
 const { SlashCommandBuilder } = require("discord.js");
+
 const youTube = new YouTube();
 
 youTube.setKey(process.env.YOUTUBE_TOKEN);
