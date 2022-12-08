@@ -19,7 +19,7 @@ module.exports = {
       const embed = new EmbedBuilder().setTitle(`Dictionary - ${query}`);
 
       if (data.title && data.title == "No Definitions Found")
-        return message.reply({
+        return interaction.reply({
           embeds: [
             embed.setColor("Red").setDescription("No Definitions Found"),
           ],
@@ -36,7 +36,7 @@ module.exports = {
           value: e.definitions[0].definition,
         });
         if (a.length - 1 == i)
-          message.reply({
+          interaction.reply({
             embeds: [embed],
           });
       });
