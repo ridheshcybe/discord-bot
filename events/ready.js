@@ -6,8 +6,8 @@ const { REST, Routes } = require("discord.js");
 
 module.exports = (client, config) => {
   let commands = [];
+  console.log(chalk.yellow("[!] Started loading slash commands..."));
   fs.readdirSync("./commands/slash/").forEach((dir) => {
-    console.log(chalk.yellow("[!] Started loading slash commands..."));
     const SlashCommands = fs
       .readdirSync(`./commands/slash/${dir}`)
       .filter((file) => file.endsWith(".js"));
