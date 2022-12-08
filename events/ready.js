@@ -4,9 +4,8 @@ const { REST, Routes } = require("discord.js");
 
 // Slash commands handler:
 
-module.exports = (client, config) => {
+module.exports = (client) => {
   console.log(
     chalk.greenBright(`[READY] ${client.user.tag} is up and ready to go.`)
   );
-  require("../handlers/slash")(client, config);
 };

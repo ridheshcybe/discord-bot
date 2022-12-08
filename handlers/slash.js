@@ -20,13 +20,6 @@ module.exports = (client, config) => {
       commands.push(pull.data.toJSON());
     }
   });
-  // Registering all the application commands:
-  if (!config.Client.ID) {
-    console.log(
-      chalk.red("[CRASH] You need to provide your bot ID in config.js!")
-    );
-    return process.exit();
-  }
 
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
@@ -36,33 +29,17 @@ module.exports = (client, config) => {
     )
   );
 
-  client.guilds.cache
-    .map((guild) => guild.id)
-    .forEach(async (e, i, a) => {
-      try {
-        let data = await rest.put(
-          Routes.applicationGuildCommands(config.Client.ID, e),
-          {
-            body: commands,
-          }
-        );
-
-        console.log(
-          chalk.greenBright(
-            `[HANDLER] Successfully registered ${data.length} application commands for ${e}`
-          )
-        );
-
-        data = null;
-      } catch (err) {
-        console.log(err);
-      }
-      if (a.length - 1 == i) {
-        console.log(
-          chalk.greenBright(
-            `[HANDLER] Successfully registered for all the application commands`
-          )
-        );
-      }
-    });
+  rest
+    .put(Routes.applicationCommands("1042689066304557067"), {
+      body: commands,
+    })
+    .then((data) => {
+      console.log(
+        chalk.greenBright(
+          `[HANDLER] Successfully registered ${data.length} application commands for ${e}`
+        )
+      );
+      data = null;
+    })
+    .catch((err) => console.error(err));
 };

@@ -60,6 +60,7 @@ client.prefix_commands = new Collection();
 
 require("./handlers/events")(client);
 require("./handlers/prefix")(client);
+require("../handlers/slash")(client, config);
 
 // Login to the bot:
 client.login(AuthenticationToken).catch((err) => {
