@@ -9,6 +9,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("dictonary")
     .setDescription("returns information about a word")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
     .addStringOption((option) =>
       option.setName("query").setDescription("word to query").setRequired(true)
     ),

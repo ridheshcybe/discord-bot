@@ -11,6 +11,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("youtube")
     .setDescription("returns first video by search")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
     .addStringOption((option) =>
       option
         .setName("query")
