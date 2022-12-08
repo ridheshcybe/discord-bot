@@ -11,6 +11,30 @@ module.exports = {
 };
 
 /*
+commands available to SlashCommandBuilder
+  'addBooleanOption',
+  'addUserOption',
+  'addChannelOption',
+  'addRoleOption',
+  'addAttachmentOption',
+  'addMentionableOption',
+  'addStringOption',
+  'addIntegerOption',
+  'addNumberOption',
+  'setName',
+  'setDescription',
+  'setNameLocalization',
+  'setNameLocalizations',
+  'setDescriptionLocalization',
+  'setDescriptionLocalizations',
+  'setDefaultPermission',
+  'setDefaultMemberPermissions',
+  'setDMPermission',
+  'addSubcommandGroup',
+  'addSubcommand',
+*/
+
+/*
 permissions: 
   'CreateInstantInvite',
   'KickMembers',
