@@ -44,7 +44,7 @@ module.exports = {
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setColor("red")
+            .setColor("Red")
             .setDescription(`Error => ${error.message || error}`),
         ],
       });
