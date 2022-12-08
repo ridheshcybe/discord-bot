@@ -1,6 +1,6 @@
 const YouTube = require("youtube-node");
 const nodecache = require("node-cache");
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 const youTube = new YouTube();
 const cache = new nodecache({ stdTTL: 100, checkperiod: 120 });
