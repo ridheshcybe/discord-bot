@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("disctonary")
+    .setName("dictonary")
     .setDescription("returns information about a word")
     .addStringOption((option) =>
       option.setName("query").setDescription("word to query").setRequired(true)
