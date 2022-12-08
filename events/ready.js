@@ -8,6 +8,7 @@ module.exports = (client, config) => {
   let commands = [];
   console.log(chalk.yellow("[!] Started loading slash commands..."));
   fs.readdirSync("./commands/slash/").forEach((dir) => {
+    console.log(chalk.greenBright(`[HANDLER - SLASH] loading ${dir}`));
     const SlashCommands = fs
       .readdirSync(`./commands/slash/${dir}`)
       .filter((file) => file.endsWith(".js"));
