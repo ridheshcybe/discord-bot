@@ -19,14 +19,15 @@ module.exports = {
     ),
   run: async (client, interaction, config, db) => {
     const query = interaction.options.getString("query");
-    if (!cache.has(query))
-      return youTube.search(query, 1, (error, result) => {
-        const reply = error
-          ? JSON.stringify(error)
-          : `https://youtube.com/watch?v=${result.items[0].id.videoId}`;
-        cache.set(query, reply);
-        interaction.reply(reply);
-      });
-    interaction.reply(cache.get(query));
+
+    if (cache.has(query)) return interaction.reply(cache.get(query));
+
+    youTube.search(query, 1, (error, result) => {
+      const reply = error
+        ? JSON.stringify(error)
+        : `https://youtube.com/watch?v=${result.items[0].id.videoId}`;
+      cache.set(query, reply);
+      interaction.reply(reply);
+    });
   },
 };
