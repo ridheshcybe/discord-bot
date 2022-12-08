@@ -1,3 +1,6 @@
+const fs = require("fs");
+const chalk = require("chalk");
+
 module.exports = (client, config) => {
   let commands = [];
   console.log(chalk.yellow("[!] Started loading slash commands..."));
