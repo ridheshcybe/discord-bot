@@ -1,6 +1,9 @@
+const nodecache = require("node-cache");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+
+const cache = new nodecache({ stdTTL: 100, checkperiod: 120 });
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,6 +14,9 @@ module.exports = {
     ),
   run: async (client, interaction, config, db) => {
     const query = interaction.options.getString("query");
+
+    if (cache.has(query))
+      return interaction.reply({ embeds: [cache.get(query)] });
 
     try {
       const data = await (
@@ -35,10 +41,12 @@ module.exports = {
           name: e.partOfSpeech,
           value: e.definitions[0].definition,
         });
-        if (a.length - 1 == i)
+        if (a.length - 1 == i) {
+          cache.set(query, embed);
           interaction.reply({
             embeds: [embed],
           });
+        }
       });
     } catch (error) {
       interaction.reply({
