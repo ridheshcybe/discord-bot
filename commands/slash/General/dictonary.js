@@ -1,4 +1,5 @@
-const got = require("got");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -12,9 +13,9 @@ module.exports = {
     const query = interaction.options.getString("query");
 
     try {
-      const data = await got.get(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${query}`
-      );
+      const data = await (
+        await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${query}`)
+      ).json();
       const embed = new EmbedBuilder().setTitle(`Dictionary - ${query}`);
 
       if (data.title && data.title == "No Definitions Found")
@@ -29,7 +30,7 @@ module.exports = {
         iconURL: "https://cdn.discordapp.com/embed/avatars/0.png",
       });
 
-      JSON.parse(data).body[0].meanings.forEach((e, i, a) => {
+      data[0].meanings.forEach((e, i, a) => {
         embed.addFields({
           name: e.partOfSpeech,
           value: e.definitions[0].definition,
