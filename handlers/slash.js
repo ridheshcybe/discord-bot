@@ -40,7 +40,7 @@ module.exports = (client, config) => {
     .then((data) => {
       console.log(
         chalk.greenBright(
-          `[HANDLER] Successfully registered ${data.length} application commands for ${e}`
+          `[HANDLER] Successfully registered ${data.length} application commands`
         )
       );
       data = null;
