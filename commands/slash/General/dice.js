@@ -17,8 +17,10 @@ module.exports = {
         .setMaxValue(20)
     ),
   run: async (client, interaction, config, db) => {
-    console.log(interaction.options.getNumber("d"));
+    const dicenumber = interaction.options.getNumber("d") || 1;
+
+    const result = Math.floor(Math.random() * dicenumber);
     // execute
-    interaction.reply("Testing in progress...");
+    interaction.reply(new EmbedBuilder().setDescription(result));
   },
 };
