@@ -21,6 +21,8 @@ module.exports = {
 
     const result = Math.floor(Math.random() * dicenumber);
     // execute
-    interaction.reply(new EmbedBuilder().setDescription(result.toString()));
+    interaction.reply({
+      embeds: [new EmbedBuilder().setDescription(result.toString())],
+    });
   },
 };
