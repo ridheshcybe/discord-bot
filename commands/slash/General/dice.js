@@ -22,7 +22,9 @@ module.exports = {
     const result = Math.floor(Math.random() * dicenumber);
     // execute
     interaction.reply({
-      embeds: [new EmbedBuilder().setDescription(result.toString())],
+      embeds: [
+        new EmbedBuilder().setDescription(result.toString()).setColor("Green"),
+      ],
     });
   },
 };
