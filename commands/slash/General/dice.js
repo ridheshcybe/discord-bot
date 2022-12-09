@@ -17,6 +17,7 @@ module.exports = {
         .setMaxValue(20)
     ),
   run: async (client, interaction, config, db) => {
+    console.log(interaction.options);
     // execute
     interaction.reply("Testing in progress...");
   },
