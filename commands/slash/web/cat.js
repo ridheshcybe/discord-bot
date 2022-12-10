@@ -15,7 +15,7 @@ module.exports = {
     const res = await fetch("https://api.thecatapi.com/v1/images/search");
     const body = await res.json();
     interaction.reply({
-      embeds: [new EmbedBuilder().setColor("green").setImage(body[0].url)],
+      embeds: [new EmbedBuilder().setColor("Green").setImage(body[0].url)],
     });
   },
 };
