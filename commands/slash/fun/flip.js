@@ -6,8 +6,8 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("<NAME>")
-    .setDescription("<DESCRIPTION>")
+    .setName("flip")
+    .setDescription("flips a coin")
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
   run: async (client, interaction, config, db) => {
     interaction.reply({
