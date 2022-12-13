@@ -41,9 +41,12 @@ module.exports = {
           .setColor("Green")
           .setTitle(`Github - ${body.name}`)
           .setFields(
-            { name: "followers", value: body.followers || 0 },
-            { name: "public repos", value: body.public_repos || 0 },
-            { name: "following", value: body.following || 0 },
+            { name: "followers", value: (body.followers || 0).toString() },
+            {
+              name: "public repos",
+              value: (body.public_repos || 0).toString(),
+            },
+            { name: "following", value: (body.following || 0).toString() },
             { name: "bio", value: body.bio || "None" },
             { name: "blog", value: body.blog || "None" },
             { name: "location", value: body.location || "None" }
