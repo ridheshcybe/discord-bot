@@ -42,7 +42,7 @@ require("http")
   .listen(3000);
 
 // Getting the bot token:
-const AuthenticationToken = process.env.TOKEN;
+const AuthenticationToken = process.env.DISCORD_TOKEN;
 if (!AuthenticationToken) {
   console.warn(
     chalk.red(
