@@ -63,13 +63,18 @@ require("./handlers/prefix")(client);
 require("./handlers/slash")(client, config);
 
 // Login to the bot:
-client.login(AuthenticationToken).catch((err) => {
-  console.error(
-    chalk.red("[CRASH] Something went wrong while connecting to your bot...")
-  );
-  console.error(chalk.red("[CRASH] Error from Discord API:" + err));
-  return process.exit();
-});
+client
+  .login(AuthenticationToken)
+  .then(() => {
+    console.log("Authentication successfull");
+  })
+  .catch((err) => {
+    console.error(
+      chalk.red("[CRASH] Something went wrong while connecting to your bot...")
+    );
+    console.error(chalk.red("[CRASH] Error from Discord API:" + err));
+    return process.exit();
+  });
 
 // Handle errors:
 process.on("unhandledRejection", async (err, promise) => {
