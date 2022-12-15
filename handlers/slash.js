@@ -25,7 +25,7 @@ module.exports = (client, config) => {
     }
   });
 
-  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
   console.log(
     chalk.yellow(
