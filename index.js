@@ -66,7 +66,7 @@ require("./handlers/slash")(client, config);
 client
   .login(AuthenticationToken)
   .then(() => {
-    console.log("Authentication successfull");
+    console.log(chalk.greenBright("[Auth] Authentication successfull"));
   })
   .catch((err) => {
     console.error(
