@@ -41,9 +41,8 @@ require("http")
   .createServer((req, res) => res.end("Ready."))
   .listen(3000);
 
-// Getting the bot token:
-const AuthenticationToken = process.env.DISCORD_TOKEN;
-if (!AuthenticationToken) {
+// check the bot token:
+if (!process.env.DISCORD_TOKEN) {
   console.warn(
     chalk.red(
       "[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js."
@@ -64,7 +63,7 @@ require("./handlers/slash")(client, config);
 
 // Login to the bot:
 client
-  .login(AuthenticationToken)
+  .login(process.env.DISCORD_TOKEN)
   .then(() => {
     console.log(chalk.greenBright("[Auth] Authentication successfull"));
   })
